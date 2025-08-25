@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
   # Stripe webhooks
   mount StripeEvent::Engine, at: "/stripe/webhooks"
+
+  namespace :admin do
+    resources :products
+  end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,0 +1,13 @@
+<div class="py-16 sm:py-24 bg-brew-light min-h-screen flex items-center justify-center">
+  <div class="max-w-xl w-full bg-white rounded-[2rem] shadow-xl p-8 sm:p-10">
+    <div class="text-center">
+      <h2 class="text-4xl font-bebas font-bold text-brew-dark mb-2">New Product</h2>
+    </div>
+    
+    <%= render 'form', product: @product %>
+    
+    <div class="mt-8 text-center">
+      <%= link_to 'Back to Products', admin_products_path, class: "text-sm font-medium text-brew-brown underline hover:no-underline transition-all duration-300" %>
+    </div>
+  </div>
+</div>

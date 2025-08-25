@@ -84,3 +84,6 @@ end
 
 # For image variants
 gem "image_processing", ">= 1.2"
+
+# Gemfile
+gem 'turbo-rails'
