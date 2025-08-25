@@ -46,11 +46,9 @@
                 Cold brew is coffee that is cold brewed with cold water over a long period. Cold brew is 70% less acidic which is better for your stomach. You can drink it straight or mix it with anything. The caffeine is higher. This is where Boldness happens.
               </p>
               <div class="flex flex-col sm:flex-row justify-center lg:justify-start items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button class="bg-brew-black text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Buy Now</button>
-                <a href="#" class="text-sm font-medium text-brew-dark underline hover:no-underline transition-all duration-300">
-                  How it's made?
-                </a>
-              </div>
+                <%= link_to "Buy Now", products_path, class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+                <%= link_to "How it's made?", about_path, class: "text-sm font-medium text-brew-dark underline hover:no-underline transition-all duration-300" %>
+                </div>
             </div>
             <div class="lg:w-1/2 flex justify-center lg:justify-end relative">
               <img src="<%= image_path('hero-coffee.png') %>" alt="Cold Brew Coffee" class="rounded-[2rem] shadow-xl w-full max-w-md lg:max-w-none transform rotate-3 sm:rotate-6 lg:rotate-0">
@@ -100,7 +98,7 @@
               <p class="text-gray-600 text-lg mb-6">
                 Crafted for Those Who Never Settle. At Bold Brew, our caffeine comes straight to you, uncut, and untamed. It’s for the go-getters, the visionaries, and the late-night grinders. We believe in the power of an idea, the strength of a grind, and the relentless pursuit of greatness. This isn’t just coffee; it’s a declaration. It’s a promise that we’ll be with you on every late night and every early morning. Whether you're a student hustler, a go-getter, or a dreamer with a plan, Bold Brew is here to fuel your drive and power your grind—without the trade-offs.
               </p>
-              <button class="bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Shop Now</button>
+              <%= link_to "Shop Now", products_path, class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
             </div>
           </div>
         </div>
@@ -117,7 +115,10 @@
                     <p class="text-gray-600 my-2">The original and strongest</p>
                     <p class="text-brew-brown font-bold text-lg mb-4">$14.99</p>
                     <div class="mt-auto">
-                    <button class="bg-white text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+                        <%= form_with url: add_item_cart_path, class: "w-full" do %>
+                            <%= hidden_field_tag :product_id, 1 %>
+                            <button type="submit" class="bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 w-full">Add to Cart</button>
+                        <% end %>
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-end text-center p-6 bg-brew-light rounded-3xl shadow-lg">
@@ -126,7 +127,10 @@
                     <p class="text-gray-600 my-2">Rich and chocolatey</p>
                     <p class="text-brew-brown font-bold text-lg mb-4">$15.99</p>
                     <div class="mt-auto">
-                    <button class="bg-white text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+                        <%= form_with url: add_item_cart_path, class: "w-full" do %>
+                            <%= hidden_field_tag :product_id, 2 %>
+                            <button type="submit" class="bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 w-full">Add to Cart</button>
+                        <% end %>
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-end text-center p-6 bg-brew-light rounded-3xl shadow-lg">
@@ -135,7 +139,10 @@
                     <p class="text-gray-600 my-2">Customize your own brew</p>
                     <p class="text-brew-brown font-bold text-lg mb-4">$16.99</p>
                     <div class="mt-auto">
-                    <button class="bg-white text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+                        <%= form_with url: add_item_cart_path, class: "w-full" do %>
+                            <%= hidden_field_tag :product_id, 3 %>
+                            <button type="submit" class="bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 w-full">Add to Cart</button>
+                        <% end %>
                     </div>
                 </div>
                 </div>
@@ -153,7 +160,7 @@
               <p class="text-gray-600 text-lg mb-6">
                 We believe that a great cup of coffee can transform your day. Our carefully selected beans are sourced from the finest farms around the world, ensuring a rich, bold, and satisfying flavor in every cup.
               </p>
-              <button class="bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Explore Now</button>
+              <%= link_to "Explore Now", products_path, class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
             </div>
           </div>
         </div>
@@ -169,7 +176,7 @@
               <p class="text-gray-600 text-lg mb-6">
                 We are passionate about crafting the perfect coffee experience. Our unique brewing process, which includes a precise balance of temperature and time, unlocks the full potential of each bean.
               </p>
-              <button class="bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Explore Now</button>
+              <%= link_to "Explore Now", products_path, class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
             </div>
           </div>
         </div>
@@ -217,7 +224,6 @@
             </div>
           </div>
         </div>
-        
       </main>
     </div>
   </body>
