@@ -1,1 +1,83 @@
 @import "tailwindcss";
+
+/* Custom component classes */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-amber-400 text-black hover:bg-amber-500 hover:scale-105 shadow-lg hover:shadow-xl;
+}
+
+.btn-outline {
+  @apply border-2 border-white text-white hover:bg-white hover:text-black;
+}
+
+.btn-secondary {
+  @apply bg-neutral-800 text-white hover:bg-neutral-700;
+}
+
+.btn-danger {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.btn-small {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.input {
+  @apply w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent;
+}
+
+.select {
+  @apply w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-sm border border-neutral-100 p-6;
+}
+
+.page-header {
+  @apply text-3xl md:text-4xl font-bold text-neutral-900 mb-8;
+}
+
+.section-header {
+  @apply text-2xl md:text-3xl font-bold text-neutral-900 mb-6;
+}
+
+.container-custom {
+  @apply mx-auto max-w-7xl px-6;
+}
+
+/* Navigation styles */
+.nav-link {
+  @apply text-neutral-700 hover:text-amber-500 font-medium transition-colors;
+}
+
+.nav-link-active {
+  @apply text-amber-500;
+}
+
+/* Product grid */
+.product-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Cart styles */
+.cart-item {
+  @apply flex items-center gap-4 p-4 bg-neutral-50 rounded-xl;
+}
+
+.quantity-input {
+  @apply w-16 text-center border border-neutral-200 rounded-lg px-2 py-1;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

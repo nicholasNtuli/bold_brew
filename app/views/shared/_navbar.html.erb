@@ -1,0 +1,33 @@
+<header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <div class="text-2xl font-bold tracking-wide">
+        Bold <span class="text-amber-600">Brew</span>
+      </div>
+    </div>
+
+    <!-- Navigation links -->
+    <nav class="hidden md:flex space-x-6 text-sm font-semibold uppercase text-gray-700">
+      <%= link_to "Home", "#", class: "hover:text-amber-600 transition" %>
+      <%= link_to "Shop", "#", class: "hover:text-amber-600 transition" %>
+      <%= link_to "About", "#", class: "hover:text-amber-600 transition" %>
+      <%= link_to "Contact", "#", class: "hover:text-amber-600 transition" %>
+    </nav>
+
+    <!-- Right side -->
+    <div class="flex items-center space-x-4">
+      <%= link_to "Sign In", "#", class: "text-gray-700 font-medium hover:text-amber-600 transition" %>
+
+      <!-- White card -->
+      <div class="bg-white rounded-xl shadow-lg px-4 py-2 flex items-center space-x-2 cursor-pointer hover:shadow-xl transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13L17 13M7 13H5.4M17 13l1.5 6M6 19h12"/>
+        </svg>
+        <span class="font-medium text-gray-800">Cart</span>
+      </div>
+    </div>
+
+  </div>
+</header>
