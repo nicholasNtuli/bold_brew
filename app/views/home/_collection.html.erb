@@ -1,0 +1,25 @@
+<section class="py-16 bg-brew-gray">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center text-2xl md:text-4xl font-semibold">Find Your Perfect Brew</h2>
+    <p class="text-center text-neutral-600 mt-2">Shop the Collection</p>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% [
+        ["Bold Classic", "collection-1.png", "$4.99"],
+        ["Mocha Chill",  "collection-2.png", "$5.49"],
+        ["Vanilla Swirl","collection-3.png", "$5.29"]
+      ].each do |name, img, price| %>
+        <article class="bg-white rounded-2xl border p-4 flex flex-col">
+          <%= image_tag img, class: "w-full aspect-[4/5] object-cover rounded-xl" %>
+          <div class="mt-4 flex items-start justify-between">
+            <div>
+              <h3 class="font-medium"><%= name %></h3>
+              <div class="text-sm text-neutral-600"><%= price %></div>
+            </div>
+            <a href="<%= products_path %>" class="px-3 py-2 text-sm rounded-lg border hover:bg-neutral-50">Shop</a>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </div>
+</section>

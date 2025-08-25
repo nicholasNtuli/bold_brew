@@ -1,0 +1,36 @@
+<section class="relative bg-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+    <div class="order-2 md:order-1">
+      <h1 class="font-display text-[64px] leading-[0.9] md:text-[104px] tracking-wider">
+        Cold<br/>Brew
+      </h1>
+      <p class="mt-6 text-neutral-700 max-w-md">
+        Fueling hustlers who never settle. Smooth, bold, and ready when you are.
+      </p>
+      <div class="mt-8 flex items-center gap-3">
+        <a href="<%= products_path %>" class="px-5 py-3 rounded-lg bg-brew-orange text-white">Buy Now</a>
+        <a href="<%= products_path %>" class="px-5 py-3 rounded-lg border">Explore</a>
+      </div>
+    </div>
+
+    <div class="order-1 md:order-2 relative">
+      <div class="absolute -right-8 -top-8 rotate-90 text-neutral-200 font-display text-5xl hidden lg:block select-none">
+        BoldBrew
+      </div>
+      <%= image_tag "hero-coffee.png",
+          class: "w-full max-w-md mx-auto drop-shadow-xl rounded-xl" %>
+
+      <div class="absolute top-4 right-4 bg-white/80 backdrop-blur px-4 py-2 rounded-lg border text-sm">
+        <div class="flex items-center justify-between gap-6">
+          <span>Size</span>
+          <div class="flex gap-1">
+            <span class="w-2 h-2 rounded-full bg-brew-orange inline-block"></span>
+            <span class="w-2 h-2 rounded-full bg-neutral-300 inline-block"></span>
+            <span class="w-2 h-2 rounded-full bg-neutral-300 inline-block"></span>
+          </div>
+          <span class="font-semibold">$4.99</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
