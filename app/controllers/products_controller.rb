@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  include Pagy::Backend
+  
   def index
     @q = Product.active.ransack(params[:q])
     @products = @q.result.includes(:category).order(created_at: :desc)

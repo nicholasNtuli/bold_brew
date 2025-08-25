@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   include AASM
-  belongs_to :order_items, optional: true
+  belongs_to :user
   has_many :order_items, dependent: :destroy
   has_one :shipping_address, -> { where(kind: "shipping") }, class_name: "Address"
   has_one :billing_address, -> { where(kind: "billing") }, class_name: "Address"

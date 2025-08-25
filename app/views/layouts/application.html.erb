@@ -1,32 +1,44 @@
-<body class="bg-white text-gray-900">
-  <!-- Navigation Bar -->
-  <header class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <!-- Logo -->
-      <div class="text-2xl font-bold tracking-wide">
-        Bold <span class="text-amber-600">Brew</span>
-      </div>
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <title>Bold Brew</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-      <!-- Nav Links -->
-      <nav class="hidden md:flex space-x-8 font-medium">
-        <a href="#" class="hover:text-amber-600">Home</a>
-        <a href="#" class="hover:text-amber-600">Shop</a>
-        <a href="#" class="hover:text-amber-600">About</a>
-        <a href="#" class="hover:text-amber-600">Contact</a>
-      </nav>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-      <!-- Actions -->
-      <div class="flex items-center space-x-4">
-        <a href="#" class="text-gray-700 hover:text-amber-600">Sign In</a>
-        <a href="#" class="bg-amber-600 text-white px-5 py-2 rounded-full hover:bg-amber-700 transition">
-          Get Started
-        </a>
-      </div>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Colors -->
+    <style>
+      :root {
+        --color-brew-brown: #8C533C;
+        --color-brew-light: #F8F5F2;
+        --color-brew-dark: #1A1A1A;
+      }
+      .bg-brew-light { background-color: var(--color-brew-light); }
+      .bg-brew-dark { background-color: var(--color-brew-dark); }
+      .text-brew-brown { color: var(--color-brew-brown); }
+      .text-brew-dark { color: var(--color-brew-dark); }
+      .border-brew-brown { border-color: var(--color-brew-brown); }
+      .font-bebas { font-family: 'Bebas Neue', sans-serif; }
+    </style>
+
+    <!-- The conflicting line has been removed -->
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body class="min-h-full bg-white text-brew-dark font-inter antialiased">
+    <div class="min-h-screen flex flex-col">
+      <%= render "shared/navbar" %>
+      <main class="flex-1">
+        <%= yield %>
+      </main>
+      <%= render "shared/footer" %>
     </div>
-  </header>
-
-  <!-- Main content -->
-  <main class="container mx-auto mt-28 px-5">
-    <%= yield %>
-  </main>
-</body>
+  </body>
+</html>

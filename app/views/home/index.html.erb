@@ -1,16 +1,221 @@
-<section class="relative overflow-hidden bg-neutral-950 text-white">
-    <div class="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Bold Brew Cold Coffee</h1>
-            <p class="mt-4 text-lg text-neutral-300">Smooth, strong, and ready when you are.</p>
-            <div class="mt-8 flex gap-3">
-                <%= link_to "Shop now", products_path, class: "btn btn-primary" %>
-                <%= link_to "Subscribe", products_path(q: { name_cont: 'Cold Brew' }), class: "btn btn-outline" %>
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <title>Bold Brew</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Colors -->
+    <style>
+      :root {
+        --color-brew-brown: #8C533C;
+        --color-brew-light: #F8F5F2;
+        --color-brew-dark: #1A1A1A;
+      }
+      .bg-brew-light { background-color: var(--color-brew-light); }
+      .bg-brew-dark { background-color: var(--color-brew-dark); }
+      .text-brew-brown { color: var(--color-brew-brown); }
+      .text-brew-dark { color: var(--color-brew-dark); }
+      .border-brew-brown { border-color: var(--color-brew-brown); }
+      .font-bebas { font-family: 'Bebas Neue', sans-serif; }
+    </style>
+
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body class="min-h-full bg-white text-brew-dark font-inter antialiased">
+    <div class="min-h-screen flex flex-col">
+
+      <main class="flex-1">
+
+        <!-- Hero Content -->
+        <div class="hero-bg py-16 sm:py-24 lg:py-32 bg-brew-light">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between space-y-12 lg:space-y-0 lg:space-x-12">
+            <div class="lg:w-1/2 text-center lg:text-left">
+              <span class="text-xs sm:text-sm font-semibold text-brew-brown uppercase tracking-widest mb-2">Pure Caffeine Nothing Extra</span>
+              <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bebas font-bold text-brew-dark leading-tight mt-2 mb-6">Cold Brew</h1>
+              <p class="text-gray-600 max-w-lg mx-auto lg:mx-0 mb-8 text-lg">
+                Cold brew is coffee that is cold brewed with cold water over a long period. Cold brew is 70% less acidic which is better for your stomach. You can drink it straight or mix it with anything. The caffeine is higher. This is where Boldness happens.
+              </p>
+              <div class="flex flex-col sm:flex-row justify-center lg:justify-start items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Buy Now</button>
+                <a href="#" class="text-sm font-medium text-brew-dark underline hover:no-underline transition-all duration-300">
+                  How it's made?
+                </a>
+              </div>
             </div>
+            <div class="lg:w-1/2 flex justify-center lg:justify-end relative">
+              <img src="<%= image_path('hero-coffee.png') %>" alt="Cold Brew Coffee" class="rounded-[2rem] shadow-xl w-full max-w-md lg:max-w-none transform rotate-3 sm:rotate-6 lg:rotate-0">
+              <div class="absolute bottom-4 left-4 lg:bottom-12 lg:left-12 bg-white/70 backdrop-blur-sm p-4 rounded-xl shadow-lg transform -rotate-6 lg:rotate-0">
+                <p class="text-sm font-semibold text-brew-brown mb-1">Price</p>
+                <p class="text-2xl font-bold text-brew-dark">$14.99</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="relative">
-            <%= image_tag "https://via.placeholder.com/600x600?text=Hero+Image", class: "w-full max-w-md mx-auto drop-shadow-2xl" %>
-            <div class="absolute -bottom-6 -right-6 bg-amber-400 text-black px-5 py-3 rounded-xl font-semibold">Low Acid • Nitro Smooth</div>
+
+        <!-- Stats Content -->
+        <div class="py-16 sm:py-24">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-brew-dark mb-12">Brewing success one sip at a time</h2>
+            <div class="flex flex-col sm:flex-row justify-around items-center space-y-8 sm:space-y-0">
+              <div class="text-center">
+                <div class="p-6 rounded-full border-4 border-brew-brown inline-block">
+                  <span class="text-5xl font-extrabold text-brew-brown">10K+</span>
+                </div>
+                <p class="mt-4 text-sm uppercase tracking-widest text-gray-500">Cups Served</p>
+              </div>
+              <div class="text-center">
+                <div class="p-6 rounded-full border-4 border-brew-brown inline-block">
+                  <span class="text-5xl font-extrabold text-brew-brown">50K+</span>
+                </div>
+                <p class="mt-4 text-sm uppercase tracking-widest text-gray-500">Orders Shipped</p>
+              </div>
+              <div class="text-center">
+                <div class="p-6 rounded-full border-4 border-brew-brown inline-block">
+                  <span class="text-5xl font-extrabold text-brew-brown">50+</span>
+                </div>
+                <p class="mt-4 text-sm uppercase tracking-widest text-gray-500">States Available</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Feature Block 1 -->
+        <div class="py-16 sm:py-24 bg-white">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8 md:space-y-0 md:space-x-12 md:flex-row-reverse">
+            <div class="md:w-1/2 flex justify-center">
+              <img src="<%= image_path('tall-glass.jpg') %>" alt="Brewing Boldness, Fueling Hustlers—" class="rounded-[2rem] shadow-xl w-full max-w-xl">
+            </div>
+            <div class="md:w-1/2">
+              <h2 class="text-3xl font-bold text-brew-dark mb-4">Brewing Boldness, Fueling Hustlers—</h2>
+              <p class="text-gray-600 text-lg mb-6">
+                Crafted for Those Who Never Settle. At Bold Brew, our caffeine comes straight to you, uncut, and untamed. It’s for the go-getters, the visionaries, and the late-night grinders. We believe in the power of an idea, the strength of a grind, and the relentless pursuit of greatness. This isn’t just coffee; it’s a declaration. It’s a promise that we’ll be with you on every late night and every early morning. Whether you're a student hustler, a go-getter, or a dreamer with a plan, Bold Brew is here to fuel your drive and power your grind—without the trade-offs.
+              </p>
+              <button class="bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Shop Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collection Content -->
+        <div class="py-16 sm:py-24">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-brew-dark mb-2">Find Your Perfect Brew</h2>
+            <h3 class="text-lg text-gray-600 mb-12">Shop the Collection</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <!-- Product Card 1 -->
+              <div class="flex flex-col items-center text-center p-6 bg-brew-light rounded-3xl shadow-lg">
+                <img src="<%= image_path('collection-1.png') %>" alt="Pure Black" class="w-48 h-64 object-cover rounded-2xl mb-4">
+                <h4 class="text-xl font-semibold text-brew-dark">Pure Black</h4>
+                <p class="text-gray-600 my-2">The original and strongest</p>
+                <p class="text-brew-brown font-bold text-lg mb-4">$14.99</p>
+                <button class="bg-brew-brown text-white font-medium py-2 px-6 rounded-full hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+              </div>
+              <!-- Product Card 2 -->
+              <div class="flex flex-col items-center text-center p-6 bg-brew-light rounded-3xl shadow-lg">
+                <img src="<%= image_path('collection-2.png') %>" alt="Mocha Daze" class="w-48 h-64 object-cover rounded-2xl mb-4">
+                <h4 class="text-xl font-semibold text-brew-dark">Mocha Daze</h4>
+                <p class="text-gray-600 my-2">Rich and chocolatey</p>
+                <p class="text-brew-brown font-bold text-lg mb-4">$15.99</p>
+                <button class="bg-brew-brown text-white font-medium py-2 px-6 rounded-full hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+              </div>
+              <!-- Product Card 3 -->
+              <div class="flex flex-col items-center text-center p-6 bg-brew-light rounded-3xl shadow-lg">
+                <img src="<%= image_path('collection-3.png') %>" alt="Get Cold Brew" class="w-48 h-64 object-cover rounded-2xl mb-4">
+                <h4 class="text-xl font-semibold text-brew-dark">Get Cold Brew</h4>
+                <p class="text-gray-600 my-2">Customize your own brew</p>
+                <p class="text-brew-brown font-bold text-lg mb-4">$16.99</p>
+                <button class="bg-brew-brown text-white font-medium py-2 px-6 rounded-full hover:bg-brew-dark transition-colors duration-300">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Block 2 -->
+        <div class="py-16 sm:py-24 bg-brew-light">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8 md:space-y-0 md:space-x-12 md:flex-row">
+            <div class="md:w-1/2 flex justify-center">
+              <img src="<%= image_path('beans-bowl.jpg') %>" alt="Fuel Your Day with Bold Brew" class="rounded-[2rem] shadow-xl w-full max-w-xl">
+            </div>
+            <div class="md:w-1/2">
+              <h2 class="text-3xl font-bold text-brew-dark mb-4">Fuel Your Day with Bold Brew</h2>
+              <p class="text-gray-600 text-lg mb-6">
+                We believe that a great cup of coffee can transform your day. Our carefully selected beans are sourced from the finest farms around the world, ensuring a rich, bold, and satisfying flavor in every cup.
+              </p>
+              <button class="bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Explore Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Block 3 -->
+        <div class="py-16 sm:py-24 bg-white">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8 md:space-y-0 md:space-x-12 md:flex-row-reverse">
+            <div class="md:w-1/2 flex justify-center">
+              <img src="<%= image_path('tall-glass.jpg') %>" alt="The Brew" class="rounded-[2rem] shadow-xl w-full max-w-xl">
+            </div>
+            <div class="md:w-1/2">
+              <h2 class="text-3xl font-bold text-brew-dark mb-4">The Brew</h2>
+              <p class="text-gray-600 text-lg mb-6">
+                We are passionate about crafting the perfect coffee experience. Our unique brewing process, which includes a precise balance of temperature and time, unlocks the full potential of each bean.
+              </p>
+              <button class="bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300">Explore Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonials Content -->
+        <div class="py-16 sm:py-24">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-brew-dark mb-12">What Our Clients Say</h2>
+            <div class="flex flex-col lg:flex-row justify-center items-center space-y-8 lg:space-y-0 lg:space-x-12">
+              <!-- Testimonial Card 1 -->
+              <div class="flex flex-col items-center text-center max-w-xs p-6 bg-white rounded-3xl shadow-lg">
+                <img src="https://placehold.co/100x100/d4d4d4/282828?text=T+D" alt="Testimonial User" class="rounded-full w-24 h-24 mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-brew-dark">Tyrell Dawson</h4>
+                <p class="text-sm text-gray-600 mb-4">CEO, Tech Innovations</p>
+                <p class="text-sm italic text-gray-700">"This coffee is amazing. The perfect balance of bold and smooth. It’s my daily go-to."</p>
+              </div>
+              <!-- Testimonial Card 2 -->
+              <div class="flex flex-col items-center text-center max-w-xs p-6 bg-white rounded-3xl shadow-lg">
+                <img src="https://placehold.co/100x100/d4d4d4/282828?text=J+M" alt="Testimonial User" class="rounded-full w-24 h-24 mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-brew-dark">Jane Miller</h4>
+                <p class="text-sm text-gray-600 mb-4">Founder, Creative Studios</p>
+                <p class="text-sm italic text-gray-700">"I've tried a lot of cold brews, but nothing compares to Bold Brew. The flavor is incredible."</p>
+              </div>
+              <!-- Testimonial Card 3 -->
+              <div class="flex flex-col items-center text-center max-w-xs p-6 bg-white rounded-3xl shadow-lg">
+                <img src="https://placehold.co/100x100/d4d4d4/282828?text=J+T" alt="Testimonial User" class="rounded-full w-24 h-24 mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-brew-dark">Johnathan Toft</h4>
+                <p class="text-sm text-gray-600 mb-4">Lead Developer, Webworks</p>
+                <p class="text-sm italic text-gray-700">"The best coffee I've ever had. It gives me the energy I need to power through my workday."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Newsletter Content -->
+        <div class="py-16 sm:py-24 bg-brew-dark text-white">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-4">Our Newsletter</h2>
+            <h3 class="text-2xl font-medium text-gray-300 mb-8">Stay Fueled. Stay Bold.</h3>
+            <div class="flex justify-center">
+              <form class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full max-w-md">
+                <input type="email" placeholder="Enter your email here" class="flex-grow p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark">
+                <button type="submit" class="bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-white hover:text-brew-brown transition-colors duration-300">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+      </main>
     </div>
-</section>
+  </body>
+</html>

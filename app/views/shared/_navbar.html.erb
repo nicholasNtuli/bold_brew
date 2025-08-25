@@ -1,32 +1,33 @@
-<header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
-  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-    
-    <!-- Logo -->
+<header class="sticky top-0 left-0 w-full bg-white shadow-sm z-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+  
     <div class="flex items-center space-x-2">
-      <div class="text-2xl font-bold tracking-wide">
-        Bold <span class="text-amber-600">Brew</span>
-      </div>
+      <%= link_to root_path, class: "flex items-center space-x-2" do %>
+        <span class="text-brew-brown text-2xl font-bold">Bold Brew</span>
+      <% end %>
     </div>
 
-    <!-- Navigation links -->
-    <nav class="hidden md:flex space-x-6 text-sm font-semibold uppercase text-gray-700">
-      <%= link_to "Home", "#", class: "hover:text-amber-600 transition" %>
-      <%= link_to "Shop", "#", class: "hover:text-amber-600 transition" %>
-      <%= link_to "About", "#", class: "hover:text-amber-600 transition" %>
-      <%= link_to "Contact", "#", class: "hover:text-amber-600 transition" %>
+    <nav class="hidden md:flex space-x-6 lg:space-x-8 text-sm font-medium">
+      <%= link_to "Home", root_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
+      <%= link_to "Shop", products_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
+      <%= link_to "About", about_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
+      <%= link_to "Contact", contact_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
     </nav>
-
-    <!-- Right side -->
+    
     <div class="flex items-center space-x-4">
-      <%= link_to "Sign In", "#", class: "text-gray-700 font-medium hover:text-amber-600 transition" %>
-
-      <!-- White card -->
-      <div class="bg-white rounded-xl shadow-lg px-4 py-2 flex items-center space-x-2 cursor-pointer hover:shadow-xl transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13L17 13M7 13H5.4M17 13l1.5 6M6 19h12"/>
+      <%= link_to "Sign In", new_user_session_path, class: "hidden md:block text-sm font-medium text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
+      
+      <%= link_to cart_path, class: "p-2 border rounded-full" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 10-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
-        <span class="font-medium text-gray-800">Cart</span>
-      </div>
+      <% end %>
+
+      <button class="md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brew-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+      </button>
     </div>
 
   </div>

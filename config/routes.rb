@@ -2,16 +2,23 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "home#index"
+
   resources :categories, only: [:show]
   resources :products, only: [:index, :show]
+  
   resource :cart, only: [:show] do
-  post :add_item
-  patch :update_item
-  delete :remove_item
-  delete :empty
+    post :add_item
+    patch :update_item
+    delete :remove_item
+    delete :empty
   end
+
   resources :checkouts, only: [:create]
   resources :orders, only: [:index, :show]
+
+  get "/about" => "static_pages#about", as: :about
+  get "/contact" => "static_pages#contact", as: :contact
+
   # Stripe webhooks
   mount StripeEvent::Engine, at: "/stripe/webhooks"
   

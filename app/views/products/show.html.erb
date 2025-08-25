@@ -1,0 +1,174 @@
+<div class="container-custom py-12">
+  <!-- Breadcrumb -->
+  <nav class="flex mb-8 text-sm text-neutral-500">
+    <%= link_to "Home", root_path, class: "hover:text-amber-600" %>
+    <span class="mx-2">/</span>
+    <%= link_to "Products", products_path, class: "hover:text-amber-600" %>
+    <span class="mx-2">/</span>
+    <%= link_to @product.category.name, category_path(@product.category), class: "hover:text-amber-600" %>
+    <span class="mx-2">/</span>
+    <span class="text-neutral-900 font-medium"><%= @product.name %></span>
+  </nav>
+
+  <div class="grid lg:grid-cols-2 gap-12">
+    <!-- Product Images -->
+    <div class="space-y-4">
+      <div class="aspect-square rounded-2xl overflow-hidden bg-neutral-50">
+        <% if @product.images.attached? %>
+          <%= image_tag @product.images.first.variant(resize_to_fill: [600, 600]).processed,
+              class: "w-full h-full object-cover",
+              alt: @product.name %>
+        <% else %>
+          <div class="w-full h-full flex items-center justify-center text-neutral-400">
+            <div class="text-center">
+              <div class="text-8xl mb-4">☕</div>
+              <p class="text-lg">No image available</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Additional Images Thumbnails -->
+      <% if @product.images.count > 1 %>
+        <div class="grid grid-cols-4 gap-2">
+          <% @product.images.each do |image| %>
+            <div class="aspect-square rounded-lg overflow-hidden bg-neutral-50 cursor-pointer hover:ring-2 hover:ring-amber-400 transition-all">
+              <%= image_tag image.variant(resize_to_fill: [150, 150]).processed,
+                  class: "w-full h-full object-cover" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Product Info -->
+    <div class="space-y-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <%= link_to @product.category.name, category_path(@product.category), 
+              class: "text-sm font-medium text-amber-600 hover:text-amber-700" %>
+          <% if @product.stock && @product.stock > 0 %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              In Stock
+            </span>
+          <% else %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+              Out of Stock
+            </span>
+          <% end %>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4"><%= @product.name %></h1>
+        <div class="flex items-center gap-4 mb-4">
+          <span class="text-3xl font-bold text-neutral-900">
+            <%= number_to_currency(@product.price_cents / 100.0, unit: '$') %>
+          </span>
+          <% if @product.sku %>
+            <span class="text-sm text-neutral-500">SKU: <%= @product.sku %></span>
+          <% end %>
+        </div>
+      </div>
+      
+      <% if @product.description.present? %>
+        <div class="prose prose-neutral max-w-none">
+          <p class="text-lg text-neutral-700 leading-relaxed"><%= simple_format(@product.description) %></p>
+        </div>
+      <% end %>
+      
+      <!-- Add to Cart Form -->
+      <div class="space-y-4">
+        <%= form_with url: add_item_cart_path(product_id: @product), method: :post, local: true, class: "space-y-4" do |f| %>
+          <div class="flex items-center space-x-4">
+            <label class="font-medium text-neutral-900">Quantity:</label>
+            <%= f.number_field :quantity, value: 1, min: 1, max: 99, 
+                class: "quantity-input w-20" %>
+            <% if @product.stock && @product.stock > 0 %>
+              <span class="text-sm text-neutral-500"><%= @product.stock %> available</span>
+            <% end %>
+          </div>
+          
+          <% if @product.active && (@product.stock.nil? || @product.stock > 0) %>
+            <%= f.submit "Add to Cart", class: "w-full btn btn-primary text-lg py-4" %>
+          <% else %>
+            <button disabled class="w-full btn bg-neutral-300 text-neutral-500 cursor-not-allowed text-lg py-4">
+              Out of Stock
+            </button>
+          <% end %>
+        <% end %>
+        
+        <!-- Additional Actions -->
+        <div class="flex space-x-4">
+          <button class="flex-1 btn btn-outline">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+            Wishlist
+          </button>
+          <button class="flex-1 btn btn-outline">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+            </svg>
+            Share
+          </button>
+        </div>
+      </div>
+      
+      <!-- Product Features -->
+      <div class="border-t border-neutral-200 pt-6">
+        <h3 class="font-bold text-neutral-900 mb-4">Product Features</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm text-neutral-700">100% Organic</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm text-neutral-700">Low Acid</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm text-neutral-700">24h Cold Brew</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm text-neutral-700">Nitro Smooth</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shipping Info -->
+      <div class="border-t border-neutral-200 pt-6">
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 text-sm">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+            <span class="text-neutral-700"><strong>Free shipping</strong> on orders over $50</span>
+          </div>
+          <div class="flex items-center space-x-3 text-sm">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-neutral-700"><strong>Same-day delivery</strong> in select areas</span>
+          </div>
+          <div class="flex items-center space-x-3 text-sm">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-neutral-700"><strong>30-day</strong> satisfaction guarantee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Related Products -->
+  <% related_products = @product.category.products.active.where.not(id: @product.id).limit(4) %>
+  <% if
