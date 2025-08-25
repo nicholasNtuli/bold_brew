@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body, html { margin: 0; padding: 0; font-family: Inter, sans-serif; }
+    .container { max-width: 600px; margin: 0 auto; background-color: #F8F5F2; padding: 40px; }
+    .header { text-align: center; padding-bottom: 20px; }
+    .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #1A1A1A; margin: 0; }
+    .content { background-color: #ffffff; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #1A1A1A; margin-top: 0; }
+    .content p { font-size: 16px; line-height: 1.5; color: #4A5568; }
+    .button { text-align: center; margin-top: 30px; }
+    .button a { display: inline-block; padding: 12px 24px; font-size: 16px; color: #ffffff; background-color: #8C533C; text-decoration: none; border-radius: 9999px; font-weight: 500; }
+    .footer { text-align: center; padding-top: 20px; font-size: 12px; color: #A0AEC0; }
+  </style>
+</head>
+<body style="background-color: #F8F5F2; padding: 20px;">
+  <div class="container">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 auto;">
+      <tr>
+        <td class="header">
+          <h1>Bold Brew</h1>
+        </td>
+      </tr>
+      <tr>
+        <td class="content">
+          <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #1A1A1A; margin-top: 0;">Welcome <%= @email %>!</h2>
+          <p style="font-size: 16px; line-height: 1.5; color: #4A5568;">You can confirm your account email through the link below:</p>
+          <div class="button">
+            <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), style: "display: inline-block; padding: 12px 24px; font-size: 16px; color: #ffffff; background-color: #8C533C; text-decoration: none; border-radius: 9999px; font-weight: 500;" %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+          <p>&copy; <%= Date.today.year %> Bold Brew. All rights reserved.</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

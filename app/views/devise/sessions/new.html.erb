@@ -1,0 +1,41 @@
+<div class="py-16 sm:py-24 bg-brew-light min-h-screen flex items-center justify-center">
+  <div class="max-w-md w-full bg-white rounded-[2rem] shadow-xl p-8 sm:p-10">
+    <div class="text-center">
+      <h2 class="text-4xl font-bebas font-bold text-brew-dark mb-2">Sign in</h2>
+      <p class="text-gray-600 mb-8">Welcome back to Bold Brew. Fuel your hustle.</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+      <div class="field">
+        <%= f.label :email, class: "sr-only" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password, class: "sr-only" %>
+        <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <%= f.check_box :remember_me, class: "h-4 w-4 text-brew-brown border-gray-300 rounded focus:ring-brew-brown" %>
+            <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" %>
+          </div>
+          <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-sm text-brew-brown hover:underline" %>
+        </div>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Log in", class: "w-full bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
+      </div>
+    <% end %>
+
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-600">
+        Don't have an account?
+        <%= link_to "Sign up", new_registration_path(resource_name), class: "font-medium text-brew-brown hover:underline" %>
+      </p>
+    </div>
+  </div>
+</div>

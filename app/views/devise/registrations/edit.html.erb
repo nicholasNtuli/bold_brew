@@ -1,0 +1,55 @@
+<div class="py-16 sm:py-24 bg-brew-light min-h-screen flex items-center justify-center">
+  <div class="max-w-lg w-full bg-white rounded-[2rem] shadow-xl p-8 sm:p-10">
+    <div class="text-center">
+      <h2 class="text-4xl font-bebas font-bold text-brew-dark mb-2">Edit <%= resource_name.to_s.humanize %></h2>
+      <p class="text-gray-600 mb-8">Update your information or change your password.</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field">
+        <%= f.label :email, class: "sr-only" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div class="text-sm text-gray-500">Currently waiting confirmation for: <span class="font-medium text-brew-brown"><%= resource.unconfirmed_email %></span></div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :password, class: "sr-only" %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "New Password (leave blank if you don't want to change it)", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+        <% if @minimum_password_length %>
+          <p class="mt-2 text-sm text-gray-500">
+            <em><%= @minimum_password_length %> characters minimum</em>
+          </p>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation, class: "sr-only" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm New Password", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :current_password, class: "sr-only" %>
+        <%= f.password_field :current_password, autocomplete: "current-password", placeholder: "Current Password (required to confirm changes)", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Update", class: "w-full bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
+      </div>
+    <% end %>
+    
+    <div class="mt-8 text-center">
+      <h3 class="text-lg font-bold text-brew-dark mb-4">Cancel my account</h3>
+      <div class="text-sm text-gray-600 mb-4">Unhappy? You can cancel your account at any time.</div>
+      <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "w-full bg-red-500 text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 cursor-pointer" %>
+    </div>
+
+    <div class="mt-8 text-center">
+      <%= link_to "Back", :back, class: "text-sm font-medium text-brew-brown underline hover:no-underline transition-all duration-300" %>
+    </div>
+  </div>
+</div>
