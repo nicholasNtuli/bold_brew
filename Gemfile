@@ -61,3 +61,26 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise"
+gem "pundit"
+gem "pagy"
+gem "ransack"
+gem "friendly_id", "~> 5.4"
+gem "stripe"
+gem "stripe_event"
+gem "aasm" 
+
+group :development, :test do
+  gem "dotenv-rails"
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+end
+
+# Builder for Admin
+# gem "administrate"
+# or gem "activeadmin"
+
+# For image variants
+gem "image_processing", ">= 1.2"

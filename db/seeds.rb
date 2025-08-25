@@ -7,3 +7,23 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+coffee = Category.find_or_create_by!(name: "Coffee")
+flavors = [
+    { name: "Bold Brew Original", price_cents: 1499 },
+    { name: "Vanilla Cold Brew", price_cents: 1599 },
+    { name: "Mocha Cold Brew", price_cents: 1599 },
+    { name: "Caramel Cold Brew", price_cents: 1699 }
+]
+
+flavors.each do |f|
+    Product.find_or_create_by!(name: f[:name]) do |p|
+        p.category = coffee
+        p.description = "Smooth, low‑acid cold brew."
+        p.price_cents = f[:price_cents]
+        p.currency = "usd"
+        p.sku = SecureRandom.hex(4)
+        p.stock = 50
+        p.active = true
+    end
+end

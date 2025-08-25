@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
+  devise_for :users
+
+  root "home#index"
+  resources :categories, only: [:show]
+  resources :products, only: [:index, :show]
+  resource :cart, only: [:show] do
+  post :add_item
+  patch :update_item
+  delete :remove_item
+  delete :empty
+  end
+  resources :checkouts, only: [:create]
+  resources :orders, only: [:index, :show]
+  # Stripe webhooks
+  mount StripeEvent::Engine, at: "/stripe/webhooks"
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

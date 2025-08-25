@@ -1,0 +1,18 @@
+<div class="group rounded-2xl border border-neutral-200/30 bg-white p-4 hover:shadow-lg transition">
+  <%= link_to product_path(product) do %>
+    <div class="aspect-square overflow-hidden rounded-xl bg-neutral-50">
+      <% if product.images.attached? %>
+        <%= image_tag product.images.first.variant(resize_to_fill: [800, 800]).processed,
+          class: "h-full w-full object-cover group-hover:scale-105 transition" %>
+      <% else %>
+        <div class="h-full w-full grid place-items-center text-neutral-400">No image</div>
+      <% end %>
+    </div>
+    <div class="mt-3 flex items-center justify-between">
+      <h3 class="font-semibold"><%= product.name %></h3>
+      <span class="font-bold"><%= number_to_currency(product.price_cents / 100.0, unit: '$') %></span>
+    </div>
+  <% end %>
+  <%= button_to "Add to cart", add_item_cart_path(product_id: product),
+    method: :post, form: { data: { turbo_stream: true } }, class: "mt-3 w-full btn btn-primary" %>
+</div>
