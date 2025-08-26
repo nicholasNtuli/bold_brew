@@ -87,3 +87,5 @@ gem "image_processing", ">= 1.2"
 
 # Gemfile
 gem 'turbo-rails'
+
+gem 'dotenv-rails', groups: [:development, :test]

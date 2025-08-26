@@ -1,10 +1,16 @@
 class CheckoutsController < ApplicationController
     before_action :authenticate_user!
 
+    def show
+      # This action is required to render the checkout page.
+      # It doesn't need complex logic, as the cart is handled elsewhere.
+      @cart = current_user.cart || Cart.find_by(session_id: session.id.to_s)
+    end
+
     def create
         cart = current_user.cart || Cart.find_by(session_id: session.id.to_s)
         line_items = cart.line_items.includes(:product)
-        
+
         session_params = {
             mode: 'payment',
             success_url: orders_url + '?success=1',
@@ -17,7 +23,7 @@ class CheckoutsController < ApplicationController
                         unit_amount: li.unit_price_cents,
                         product_data: {
                             name: li.product.name,
-                            images: li.product.images.map { |img| url_for(img) } rescue []
+                            images: (li.product.images.attached? ? li.product.images.map { |img| url_for(img) } : [])
                         }
                     }
                 }
@@ -25,7 +31,7 @@ class CheckoutsController < ApplicationController
         }
 
         session = Stripe::Checkout::Session.create(session_params)
-        
+
         order = Order.create!(
             user: current_user,
             status: 'pending',

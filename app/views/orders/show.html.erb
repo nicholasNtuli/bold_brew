@@ -1,0 +1,34 @@
+<div class="container-custom py-12 px-4">
+    <h1 class="font-bebas text-5xl text-brew-brown mb-8">Order Details</h1>
+
+    <% if @order %>
+        <div class="bg-white p-8 rounded-lg shadow-md border border-neutral-200">
+            <h2 class="text-2xl font-bold text-brew-dark mb-4">Order #<%= @order.id %></h2>
+            <p class="text-sm text-neutral-600 mb-6">
+                Placed on <%= @order.created_at.strftime('%B %e, %Y') %>
+            </p>
+
+            <div class="space-y-4 border-b border-neutral-200 pb-6 mb-6">
+                <% @order.line_items.each do |li| %>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg text-brew-dark"><%= li.product_name %> x <%= li.quantity %></span>
+                        <span class="text-lg font-semibold text-brew-dark">
+                            <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: '$') %>
+                        </span>
+                    </div>
+                <% end %>
+            </div>
+
+            <div class="flex justify-between text-lg font-bold">
+                <span class="text-brew-dark">Total</span>
+                <span class="text-brew-dark">
+                    <%= number_to_currency(@order.total_cents / 100.0, unit: '$') %>
+                </span>
+            </div>
+            
+            <%= link_to "Back to Orders", orders_path, class: "mt-8 inline-block bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+        </div>
+    <% else %>
+        <p class="text-neutral-600 text-center py-12">Order not found.</p>
+    <% end %>
+</div>

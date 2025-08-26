@@ -1,19 +1,7 @@
-<div class="container-custom py-12">
-  <!-- Breadcrumb -->
-  <nav class="flex mb-8 text-sm text-neutral-500">
-    <%= link_to "Home", root_path, class: "hover:text-amber-600" %>
-    <span class="mx-2">/</span>
-    <%= link_to "Products", products_path, class: "hover:text-amber-600" %>
-    <span class="mx-2">/</span>
-    <%= link_to @product.category.name, category_path(@product.category), class: "hover:text-amber-600" %>
-    <span class="mx-2">/</span>
-    <span class="text-neutral-900 font-medium"><%= @product.name %></span>
-  </nav>
-
+<div class="container-custom py-12 px-6">
   <div class="grid lg:grid-cols-2 gap-12">
-    <!-- Product Images -->
     <div class="space-y-4">
-      <div class="aspect-square rounded-2xl overflow-hidden bg-neutral-50">
+      <div class="aspect-square rounded-2xl overflow-hidden bg-neutral-50 shadow-lg">
         <% if @product.images.attached? %>
           <%= image_tag @product.images.first.variant(resize_to_fill: [600, 600]).processed,
               class: "w-full h-full object-cover",
@@ -28,11 +16,10 @@
         <% end %>
       </div>
       
-      <!-- Additional Images Thumbnails -->
       <% if @product.images.count > 1 %>
         <div class="grid grid-cols-4 gap-2">
           <% @product.images.each do |image| %>
-            <div class="aspect-square rounded-lg overflow-hidden bg-neutral-50 cursor-pointer hover:ring-2 hover:ring-amber-400 transition-all">
+            <div class="aspect-square rounded-lg overflow-hidden bg-neutral-50 cursor-pointer hover:ring-2 hover:ring-amber-400 transition-all shadow-md">
               <%= image_tag image.variant(resize_to_fill: [150, 150]).processed,
                   class: "w-full h-full object-cover" %>
             </div>
@@ -41,7 +28,6 @@
       <% end %>
     </div>
     
-    <!-- Product Info -->
     <div class="space-y-6">
       <div>
         <div class="flex items-center gap-2 mb-2">
@@ -74,7 +60,6 @@
         </div>
       <% end %>
       
-      <!-- Add to Cart Form -->
       <div class="space-y-4">
         <%= form_with url: add_item_cart_path(product_id: @product), method: :post, local: true, class: "space-y-4" do |f| %>
           <div class="flex items-center space-x-4">
@@ -86,16 +71,15 @@
             <% end %>
           </div>
           
-          <% if @product.active && (@product.stock.nil? || @product.stock > 0) %>
-            <%= f.submit "Add to Cart", class: "w-full btn btn-primary text-lg py-4" %>
+          <% if @product.is_active && (@product.stock.nil? || @product.stock > 0) %>
+            <%= f.submit "Add to Cart", class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 w-full" %>
           <% else %>
-            <button disabled class="w-full btn bg-neutral-300 text-neutral-500 cursor-not-allowed text-lg py-4">
+            <button disabled class="bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg transition-colors duration-300 w-full opacity-50 cursor-not-allowed">
               Out of Stock
             </button>
           <% end %>
         <% end %>
         
-        <!-- Additional Actions -->
         <div class="flex space-x-4">
           <button class="flex-1 btn btn-outline">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +96,6 @@
         </div>
       </div>
       
-      <!-- Product Features -->
       <div class="border-t border-neutral-200 pt-6">
         <h3 class="font-bold text-neutral-900 mb-4">Product Features</h3>
         <div class="grid grid-cols-2 gap-4">
@@ -143,7 +126,6 @@
         </div>
       </div>
       
-      <!-- Shipping Info -->
       <div class="border-t border-neutral-200 pt-6">
         <div class="space-y-3">
           <div class="flex items-center space-x-3 text-sm">
@@ -169,6 +151,28 @@
     </div>
   </div>
   
-  <!-- Related Products -->
   <% related_products = @product.category.products.active.where.not(id: @product.id).limit(4) %>
-  <% if
+  <% if related_products.any? %>
+    <div class="mt-20">
+      <h2 class="text-3xl font-bold text-neutral-900 mb-6">Related Products</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <% related_products.each do |related_product| %>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <% if related_product.images.attached? %>
+              <%= image_tag related_product.images.first, class: "w-full h-48 object-cover" %>
+            <% end %>
+            <div class="p-4">
+              <h3 class="text-xl font-bold text-neutral-900 mb-2">
+                <%= link_to related_product.name, related_product %>
+              </h3>
+              <p class="text-neutral-600 mb-4"><%= related_product.description.truncate(80) %></p>
+              <p class="font-bold text-lg text-neutral-900">
+                <%= number_to_currency(related_product.price_cents / 100.0) %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

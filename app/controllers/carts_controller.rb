@@ -14,7 +14,7 @@ class CartsController < ApplicationController
 
   def update_item
     li = @cart.line_items.find(params[:id])
-    li.update!(quantity: params[:quantity])
+    li.update!(quantity: params[:cart][:quantity])
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to cart_path }

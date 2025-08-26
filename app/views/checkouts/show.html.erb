@@ -1,0 +1,88 @@
+<div class="container-custom py-12 px-4">
+  <h1 class="font-bebas text-5xl text-brew-brown mb-8">Checkout</h1>
+  
+  <% if @cart.line_items.any? %>
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-4">
+        <h2 class="text-2xl font-bold text-brew-dark">Your Order</h2>
+        <% @cart.line_items.includes(:product).each do |item| %>
+          <div class="flex items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0">
+            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+              <% if item.product.images.attached? %>
+                <%= image_tag item.product.images.first.variant(resize_to_fill: [80, 80]).processed,
+                    class: "w-full h-full object-cover" %>
+              <% else %>
+                <div class="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs">
+                  No Image
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-brew-dark truncate"><%= item.product.name %></h3>
+              <p class="text-sm text-brew-brown"><%= item.product.category.name %></p>
+            </div>
+            
+            <div class="text-right flex-shrink-0">
+              <p class="font-bold text-md text-brew-dark">
+                <%= number_to_currency(item.unit_price_cents / 100.0, unit: '$') %> x <%= item.quantity %>
+              </p>
+              <p class="font-bold text-lg text-brew-dark mt-1">
+                <%= number_to_currency((item.quantity * item.unit_price_cents) / 100.0, unit: '$') %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-lg shadow-md border border-neutral-200 sticky top-24">
+          <h2 class="text-xl font-bold text-brew-dark mb-6">Order Summary</h2>
+          
+          <div class="space-y-4">
+            <div class="flex justify-between">
+              <span class="text-neutral-600">Subtotal (<%= @cart.line_items.sum(:quantity) %> items)</span>
+              <span class="font-semibold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: '$') %></span>
+            </div>
+            
+            <div class="flex justify-between">
+              <span class="text-neutral-600">Shipping</span>
+              <span class="font-semibold text-green-600">Free</span>
+            </div>
+            
+            <div class="flex justify-between">
+              <span class="text-neutral-600">Tax</span>
+              <span class="font-semibold text-brew-dark">Calculated at checkout</span>
+            </div>
+            
+            <hr class="border-neutral-200">
+            
+            <div class="flex justify-between text-lg">
+              <span class="font-bold text-brew-dark">Total</span>
+              <span class="font-bold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: '$') %></span>
+            </div>
+          </div>
+          
+          <div class="mt-8">
+            <%= button_to "Complete Order", checkouts_path, method: :post, 
+                class: "w-full bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+            <p class="text-xs text-neutral-500 mt-2 text-center">
+              You will be redirected to our secure payment portal.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="text-center py-16">
+      <div class="w-24 h-24 bg-brew-light rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-12 h-12 text-brew-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 7H2m5 6v6a1 1 0 001 1h8a1 1 0 001-1v-6m-9 0h10"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-brew-dark mb-4">Your cart is empty</h2>
+      <p class="text-neutral-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
+      <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

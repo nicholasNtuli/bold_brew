@@ -2,7 +2,7 @@
 class Admin::ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin!
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: %i[ edit update destroy ]
 
   def index
     @products = Product.all.order(created_at: :desc)

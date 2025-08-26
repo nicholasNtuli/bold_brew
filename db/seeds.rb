@@ -27,3 +27,28 @@ flavors.each do |f|
         p.active = true
     end
 end
+
+puts "Creating categories..."
+category1 = Category.create!(name: 'Coffee Beans', description: 'Freshly roasted coffee beans from around the world.')
+category2 = Category.create!(name: 'Brewing Equipment', description: 'Tools for brewing the perfect cup.')
+
+puts "Creating products..."
+Product.create!(
+  name: "Espresso Blend",
+  description: "A rich and full-bodied espresso blend.",
+  price: 1500, # Price in cents
+  category: category1,
+  active: true,
+  currency: 'usd'
+)
+
+Product.create!(
+  name: "Pour-Over Dripper",
+  description: "Ceramic pour-over dripper for a clean brew.",
+  price: 2500, # Price in cents
+  category: category2,
+  active: true,
+  currency: 'usd'
+)
+
+puts "Database seeded successfully!"

@@ -1,5 +1,15 @@
 <%= form_with model: [:admin, product], class: "space-y-6" do |form| %>
-  <%= render "devise/shared/error_messages", resource: product %>
+
+  <% if product.errors.any? %>
+    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <p class="font-bold">Please correct the following errors:</p>
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li class="mt-1 text-sm"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= form.label :name, class: "sr-only" %>
@@ -31,7 +41,9 @@
     <%= form.file_field :images, multiple: true, class: "mt-1 w-full p-3 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brew-brown file:text-white hover:file:bg-brew-dark" %>
   </div>
 
+  <%= form.hidden_field :currency, value: "USD" %>
+
   <div class="actions">
-    <%= form.submit class: "w-full bg-brew-brown text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
+    <%= form.submit class: "w-full bg-brew-brown text-Black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
   </div>
 <% end %>

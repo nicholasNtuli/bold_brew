@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "orders/index"
+  get "orders/show"
   devise_for :users
 
   root "home#index"
@@ -18,6 +20,7 @@ Rails.application.routes.draw do
 
   get "/about" => "static_pages#about", as: :about
   get "/contact" => "static_pages#contact", as: :contact
+  get 'checkouts', to: 'checkouts#show'
 
   # Stripe webhooks
   mount StripeEvent::Engine, at: "/stripe/webhooks"
