@@ -33,15 +33,17 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<%= number_with_precision(product.price_cents / 100.0, precision: 2) %></td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <% if product.is_active %>
+              <% if product.active %>
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
               <% else %>
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
               <% end %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <%= link_to 'Edit', edit_admin_product_path(product), class: "text-brew-brown hover:text-brew-dark" %>
-              <%= link_to 'Destroy', admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "ml-2 text-red-600 hover:text-red-900" %>
+              <div class="flex items-center justify-end space-x-2">
+                <%= link_to 'Edit', edit_admin_product_path(product), class: "text-brew-brown hover:text-brew-dark" %>
+                <%= button_to 'Destroy', admin_product_path(product), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "text-red-600 hover:text-red-900" %>
+              </div>
             </td>
           </tr>
         <% end %>

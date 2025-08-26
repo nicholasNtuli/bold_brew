@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   get "orders/index"
   get "orders/show"
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
   root "home#index"
 
@@ -23,11 +25,15 @@ Rails.application.routes.draw do
   get 'checkouts', to: 'checkouts#show'
 
   # Stripe webhooks
-  mount StripeEvent::Engine, at: "/stripe/webhooks"
+  mount StripeEvent::Engine, at: "/stripe/webhooks", to: "stripe_webhooks#create"
 
   namespace :admin do
     resources :products
   end
+
+  # devise_scope :user do
+  #   get 'sign_out', to: 'sessions#destroy'
+  # end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -9,7 +9,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def new
-    @product = Product.new
+    @product = Product.new(stock: 1)
   end
 
   def create
@@ -32,6 +32,10 @@ class Admin::ProductsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to admin_products_path
+  end
+
   def destroy
     @product.destroy
     redirect_to admin_products_path, notice: 'Product was successfully deleted.', status: :see_other
@@ -44,7 +48,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :is_active, images: [])
+    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active, images: [])
   end
 
   def authorize_admin!
