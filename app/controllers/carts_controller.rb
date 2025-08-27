@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+  before_action :store_user_location!, if: :storable_location?
+  
   def show
     @cart = current_cart
   end
@@ -24,5 +26,16 @@ class CartsController < ApplicationController
   def empty
     current_cart.line_items.delete_all
     redirect_to cart_path, notice: "Cart emptied"
+  end
+
+  private
+
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+  end
+
+  def store_user_location!
+    # :user is the scope for Devise, which is correct for users
+    store_location_for(:user, request.fullpath)
   end
 end
