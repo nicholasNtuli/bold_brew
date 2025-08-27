@@ -39,24 +39,16 @@ class CartsController < ApplicationController
 
   def load_cart
     if current_user
-      # User is signed in - use user cart
+      # If a user is signed in, always use their dedicated cart.
       @cart = Cart.find_or_create_by(user: current_user)
-      
-      # If user just signed in, clear any existing items for fresh start
-      if session[:just_signed_in]
-        @cart.line_items.destroy_all
-        session.delete(:just_signed_in)
-      end
-      
-      # Clear any session cart that might exist
-      if session[:cart_id]
-        session_cart = Cart.find_by(id: session[:cart_id])
-        session_cart&.destroy if session_cart&.user_id.nil?
-        session.delete(:cart_id)
-      end
+    elsif session[:cart_id]
+      # If a guest has a cart, find it using the session ID.
+      @cart = Cart.find_by(id: session[:cart_id]) || Cart.create(session_id: session.id.to_s)
     else
-      # User is not signed in - use session cart
-      @cart = Cart.find_or_create_by(session_id: session.id.to_s)
+      # If no user and no guest cart, create a new guest cart.
+      @cart = Cart.create(session_id: session.id.to_s)
     end
+    # Ensure the session[:cart_id] is set correctly for guests.
+    session[:cart_id] = @cart.id unless current_user
   end
 end

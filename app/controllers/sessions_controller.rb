@@ -2,11 +2,11 @@
 class Users::SessionsController < Devise::SessionsController
   protected
 
-  def after_sign_in_path_for(resource)
-    # Set flag to indicate user just signed in (for cart cleanup)
-    session[:just_signed_in] = true
-    super
-  end
+  # We no longer need to define this method to handle the cart.
+  # The Warden callback will handle the cart transfer.
+  # def after_sign_in_path_for(resource)
+  #   super
+  # end
 
   def after_sign_out_path_for(resource_or_scope)
     # Clear user's cart on sign out
