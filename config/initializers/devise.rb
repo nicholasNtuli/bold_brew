@@ -313,4 +313,30 @@ Devise.setup do |config|
   
   config.scoped_views = true
   # config.controllers = { sessions: 'sessions' }
+  
+  # =========================================================================
+  # ADD THE WARDEN HOOKS BELOW
+  # =========================================================================
+  
+  # Warden Hook to transfer a guest's cart to a user on sign-in.
+  Warden::Manager.after_authentication do |user, auth, opts|
+    guest_cart = Cart.find_by(id: auth.session[:cart_id])
+
+    # Only transfer if a guest cart exists and is not already linked to a user.
+    if guest_cart.present? && guest_cart.user_id.nil?
+      user_cart = Cart.find_or_create_by(user: user)
+      
+      # Transfer all line items from the guest cart to the user's cart.
+      guest_cart.line_items.each do |item|
+        user_cart.add(item.product, item.quantity)
+      end
+      
+      # Destroy the now-empty guest cart and clear the session ID.
+      guest_cart.destroy
+      auth.session.delete(:cart_id)
+      
+      # Redirect the user to the cart page after sign-in.
+      auth.session[:user_return_to] = '/cart'
+    end
+  end
 end

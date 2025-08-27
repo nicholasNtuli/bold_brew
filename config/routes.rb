@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
   get "orders/index"
   get "orders/show"
-  devise_for :users, controllers: {
-    sessions: 'users/sessions'
-  }
+  devise_for :users
 
   root "home#index"
 
