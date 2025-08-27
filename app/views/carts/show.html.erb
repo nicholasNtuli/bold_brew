@@ -50,7 +50,7 @@
         <% end %>
         
         <div class="pt-4 flex space-x-5 items-center">
-          <%= link_to "Continue Shopping", products_path, class: "bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+          <%= link_to "Continue Shopping", products_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
           <%= button_to "Empty Cart", empty_cart_path, method: :delete, 
               class: "bg-red-500 text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300",
               confirm: "Are you sure you want to empty your cart?" %>
@@ -87,13 +87,16 @@
           
           <div class="mt-8">
             <% if user_signed_in? %>
-              <%= button_to "Proceed to Checkout", checkouts_path, method: :post, 
-                  class: "w-full bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+              <%= link_to "Proceed to Checkout", checkouts_path, 
+                  class: "w-full bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 text-center block", data: { turbo_method: :post } %>
             <% else %>
-              <div class="text-center">
-                <p class="text-sm text-neutral-600 mb-3">Please sign in to checkout</p>
-                <%= link_to "Sign In", new_user_session_path, class: "w-full bg-brew-brown text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 text-center" %>
-                <p class="text-xs text-neutral-500 mt-2">
+              <div class="text-center space-y-2">
+                <p class="text-sm text-neutral-600">Please sign in to checkout</p>
+
+                <%= link_to "Sign In", new_user_session_path,
+                  class: "block w-full bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 text-center" %>
+
+                <p class="text-xs text-neutral-500">
                   Don't have an account? 
                   <%= link_to "Sign up", new_user_registration_path, class: "text-brew-brown hover:text-amber-700 font-medium" %>
                 </p>
@@ -124,12 +127,12 @@
     <div class="text-center py-16">
       <div class="w-24 h-24 bg-brew-light rounded-full flex items-center justify-center mx-auto mb-6">
         <svg class="w-12 h-12 text-brew-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 7H2m5 6v6a1 1 0 001 1h8a1 1 0 001-1v-6m-9 0h10"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5.4M7 13l-2.293 2.293c-.63.63-.182 1.715.707 1.715H17m0-8a2 2 0 11-4 0 2 2 0 014 0zm-4 8a2 2 0 11-4 0 2 2 0 014 0z"/>
         </svg>
       </div>
-      <h2 class="text-2xl font-bold text-brew-dark mb-4">Your cart is empty</h2>
-      <p class="text-neutral-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
-      <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
+      <h2 class="text-xl font-bold text-brew-dark mb-4">Your cart is empty.</h2>
+      <p class="text-sm text-neutral-600 mb-6">Explore our bold selection of coffees and find your perfect brew.</p>
+      <%= link_to 'Start Shopping', products_path, class: "inline-block font-bebas text-xl px-8 py-3 rounded-full bg-brew-light text-black tracking-widest hover:bg-brew-dark transition-colors duration-30 shadow-md" %>
     </div>
   <% end %>
 </div>
