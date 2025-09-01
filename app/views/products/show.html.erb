@@ -157,8 +157,12 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <% related_products.each do |related_product| %>
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <% if related_product.images.attached? %>
-              <%= image_tag related_product.images.first, class: "w-full h-48 object-cover" %>
+            <%= link_to related_product do %>
+              <% if related_product.images.attached? %>
+                <%= image_tag related_product.images.first, class: "w-full h-64 object-cover" %>
+              <% else %>
+                <%= image_tag "placeholder.png", class: "w-full h-64 object-cover", alt: "No image available" %>
+              <% end %>
             <% end %>
             <div class="p-4">
               <h3 class="text-xl font-bold text-neutral-900 mb-2">
