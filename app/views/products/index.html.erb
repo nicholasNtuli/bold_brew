@@ -5,32 +5,35 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
       <% @products.each do |product| %>
         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col justify-between">
-          
-          <% if product.images.attached? %>
-            <%= link_to product do %>
+          <%= link_to product, class: "flex flex-col h-full" do %>
+            <% if product.images.attached? %>
               <%= image_tag product.images.first, class: "w-full h-64 object-cover", alt: "No image available" %>
-            <% end %>
-          <% else %>
-            <%= link_to product do %>
+            <% else %>
               <%= image_tag "placeholder.png", class: "w-full h-64 object-cover", alt: "No image available" %>
             <% end %>
-          <% end %>
 
-        <div class="p-4 flex flex-col h-full">
-          <div class="flex-grow">
-            <h2 class="text-xl font-bold text-brew-dark mb-2">
-              <%= link_to product.name, product, class: "hover:text-brew-brown transition-colors" %>
-            </h2>
-            <p class="text-neutral-600 mb-4">
-              <%= product.description.truncate(120) %>
-            </p>
-          </div>
-          <div class="mt-auto">
-            <p class="font-bold text-lg text-brew-brown">
-            <%= number_to_currency(product.price_cents / 100.0) %>
-          </p>
-          </div>
-        </div>
+            <div class="p-4 flex flex-col h-full">
+              <div class="flex-grow">
+                <h2 class="text-xl font-bold text-brew-dark mb-2">
+                  <%= product.name %>
+                </h2>
+                <p class="text-neutral-600 mb-4">
+                  <% first_sentence = product.description.split('.').first.strip %>
+                  <% if first_sentence.present? && product.description.length > first_sentence.length %>
+                    <%= first_sentence + "." %>
+                    <span class="text-brew-brown hover:underline">Read More</span>
+                  <% else %>
+                    <%= product.description %>
+                  <% end %>
+                </p>
+              </div>
+              <div class="mt-auto">
+                <p class="font-bold text-lg text-brew-brown">
+                  <%= number_to_currency(product.price_cents / 100.0) %>
+                </p>
+              </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
