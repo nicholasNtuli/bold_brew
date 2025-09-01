@@ -21,7 +21,6 @@
                   <% first_sentence = product.description.split('.').first.strip %>
                   <% if first_sentence.present? && product.description.length > first_sentence.length %>
                     <%= first_sentence + "." %>
-                    <span class="text-brew-brown hover:underline">Read More</span>
                   <% else %>
                     <%= product.description %>
                   <% end %>
