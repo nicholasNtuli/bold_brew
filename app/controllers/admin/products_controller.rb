@@ -52,7 +52,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active)
+    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active, :stock)
   end
 
   def authorize_admin!

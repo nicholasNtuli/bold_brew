@@ -51,4 +51,9 @@
   <div class="actions">
     <%= form.submit class: "w-full bg-brew-brown text-Black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
   </div>
+
+  <div class="field">
+    <%= form.label :stock, "Stock", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :stock, placeholder: "e.g., 50", class: "mt-1 w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
+  </div>
 <% end %>
