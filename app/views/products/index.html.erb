@@ -2,31 +2,35 @@
   <h1 class="font-bebas text-5xl text-brew-black mb-8">All Products</h1>
 
   <% if @products.any? %>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
       <% @products.each do |product| %>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col justify-between">
           
           <% if product.images.attached? %>
             <%= link_to product do %>
-              <%= image_tag product.images.first, class: "w-full h-48 object-cover" %>
+              <%= image_tag product.images.first, class: "w-full h-64 object-cover", alt: "No image available" %>
             <% end %>
           <% else %>
             <%= link_to product do %>
-              <%= image_tag "placeholder.png", class: "w-full h-48 object-cover", alt: "No image available" %>
+              <%= image_tag "placeholder.png", class: "w-full h-64 object-cover", alt: "No image available" %>
             <% end %>
           <% end %>
 
-          <div class="p-4">
+        <div class="p-4 flex flex-col h-full">
+          <div class="flex-grow">
             <h2 class="text-xl font-bold text-brew-dark mb-2">
               <%= link_to product.name, product, class: "hover:text-brew-brown transition-colors" %>
             </h2>
             <p class="text-neutral-600 mb-4">
-              <%= product.description.truncate(80) %>
-            </p>
-            <p class="font-bold text-lg text-brew-brown">
-              <%= number_to_currency(product.price_cents / 100.0) %>
+              <%= product.description.truncate(120) %>
             </p>
           </div>
+          <div class="mt-auto">
+            <p class="font-bold text-lg text-brew-brown">
+            <%= number_to_currency(product.price_cents / 100.0) %>
+          </p>
+          </div>
+        </div>
         </div>
       <% end %>
     </div>
