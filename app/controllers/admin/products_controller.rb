@@ -25,6 +25,10 @@ class Admin::ProductsController < ApplicationController
   end
 
   def update
+    if params[:product][:images].present?
+      @product.images.attach(params[:product][:images])
+    end
+
     if @product.update(product_params)
       redirect_to admin_products_path, notice: 'Product was successfully updated.'
     else
@@ -48,7 +52,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active, images: [])
+    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active)
   end
 
   def authorize_admin!
