@@ -38,7 +38,12 @@
 
   <div class="field">
     <%= form.label :images, "Product Images", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.file_field :images, multiple: true, class: "mt-1 w-full p-3 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brew-brown file:text-white hover:file:bg-brew-dark" %>
+    <% if product.images.attached? %>
+      <div class="mt-4 mb-4">
+        <%= image_tag product.images.first, class: "w-32 h-32 object-cover rounded-xl shadow-md" %>
+      </div>
+    <% end %>
+    <%= form.file_field :images, multiple: true, class: "mt-1 w-full p-3 text-sm text-gray-50..." %>
   </div>
 
   <%= form.hidden_field :currency, value: "USD" %>
