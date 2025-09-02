@@ -27,8 +27,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :products
+    resources :categories
   end
-
   # devise_scope :user do
   #   get 'sign_out', to: 'sessions#destroy'
   # end

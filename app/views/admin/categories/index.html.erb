@@ -1,0 +1,32 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bebas font-bold text-brew-dark">Category Management</h1>
+    <%= link_to 'Add New Category', new_admin_category_path, class: "bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @categories.each do |category| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900"><%= category.name %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <%= link_to 'Edit', edit_admin_category_path(category), class: "text-brew-brown hover:text-brew-dark" %>
+                <%= button_to 'Destroy', admin_category_path(category), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "text-red-600 hover:text-red-900" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,7 +1,10 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
   <div class="flex justify-between items-center mb-8">
     <h1 class="text-4xl font-bebas font-bold text-brew-dark">Product Management</h1>
-    <%= link_to 'Add New Product', new_admin_product_path, class: "bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    <div class="flex space-x-4">
+      <%= link_to 'Manage Categories', admin_categories_path, class: "bg-gray-200 text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-gray-300 transition-colors duration-300" %>
+      <%= link_to 'Add New Product', new_admin_product_path, class: "bg-brew-brown text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    </div>
   </div>
 
   <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
@@ -21,12 +24,10 @@
           <tr>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10">
-                  <%= image_tag product.images.first, class: "h-10 w-10 rounded-full object-cover" if product.images.any? %>
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900"><%= product.name %></div>
-                </div>
+                <% if product.images.attached? %>
+                  <%= image_tag product.images.first, class: "h-10 w-10 rounded-lg object-cover mr-4" %>
+                <% end %>
+                <div class="text-sm font-medium text-gray-900"><%= product.name %></div>
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
