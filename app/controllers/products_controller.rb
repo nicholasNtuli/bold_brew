@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
     @q = Product.active.ransack(params[:q])
     @products = @q.result.includes(:category).order(created_at: :desc)
     @pagy, @products = pagy(@products, items: 12)
+    @categories = Category.all
   end
 
   def show
