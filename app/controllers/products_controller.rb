@@ -17,7 +17,6 @@ class ProductsController < ApplicationController
 
     @q = base_scope.ransack(params[:q])
     @products = @q.result.includes(:category).order(created_at: :desc)
-    @pagy, @products = pagy(@products, items: 12)
   end
 
   def show

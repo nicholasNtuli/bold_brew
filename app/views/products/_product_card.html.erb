@@ -10,7 +10,7 @@
     </div>
     <div class="mt-3 flex items-center justify-between">
       <h3 class="font-semibold"><%= product.name %></h3>
-      <span class="font-bold"><%= number_to_currency(product.price_cents / 100.0, unit: '$') %></span>
+      <span class="font-bold"><%= number_to_currency(product.price_cents / 100.0, unit: 'R') %></span>
     </div>
   <% end %>
   <%= button_to "Add to cart", add_item_cart_path(product_id: product),

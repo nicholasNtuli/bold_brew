@@ -23,6 +23,7 @@
             <% end %>
 
             <div class="p-4 flex flex-col h-full">
+      
               <div class="flex-grow">
                 <h2 class="text-xl font-bold text-brew-dark mb-2">
                   <%= product.name %>
@@ -36,12 +37,14 @@
                   <% end %>
                 </p>
               </div>
+        
               <div class="mt-auto">
                 <p class="font-bold text-lg text-brew-brown">
-                  <%= number_to_currency(product.price_cents / 100.0) %>
+                  <%= number_to_currency(product.price_cents / 100.0, unit: 'R') %>
                 </p>
               </div>
             </div>
+          
           <% end %>
         </div>
       <% end %>

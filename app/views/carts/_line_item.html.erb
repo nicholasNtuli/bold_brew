@@ -14,7 +14,7 @@
     <h3 class="font-semibold text-neutral-900 truncate"><%= line_item.product.name %></h3>
     <p class="text-sm text-neutral-600"><%= line_item.product.category.name %></p>
     <p class="text-lg font-bold text-neutral-900 mt-1">
-      <%= number_to_currency(line_item.unit_price_cents / 100.0, unit: '$') %>
+      <%= number_to_currency(line_item.unit_price_cents / 100.0, unit: 'R') %>
     </p>
   </div>
   
@@ -36,7 +36,7 @@
   
   <div class="text-right">
     <p class="font-bold text-lg text-neutral-900">
-      <%= number_to_currency((line_item.quantity * line_item.unit_price_cents) / 100.0, unit: '$') %>
+      <%= number_to_currency((line_item.quantity * line_item.unit_price_cents) / 100.0, unit: 'R') %>
     </p>
   </div>
 </div>

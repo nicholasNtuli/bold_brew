@@ -13,7 +13,7 @@
                     <div class="flex items-center justify-between">
                         <span class="text-lg text-brew-dark"><%= li.product_name %> x <%= li.quantity %></span>
                         <span class="text-lg font-semibold text-brew-dark">
-                            <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: '$') %>
+                            <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: 'R') %>
                         </span>
                     </div>
                 <% end %>
@@ -22,7 +22,7 @@
             <div class="flex justify-between text-lg font-bold">
                 <span class="text-brew-dark">Total</span>
                 <span class="text-brew-dark">
-                    <%= number_to_currency(@order.total_cents / 100.0, unit: '$') %>
+                    <%= number_to_currency(@order.total_cents / 100.0, unit: 'R') %>
                 </span>
             </div>
             

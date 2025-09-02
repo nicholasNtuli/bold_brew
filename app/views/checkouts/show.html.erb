@@ -25,10 +25,10 @@
             
             <div class="text-right flex-shrink-0">
               <p class="font-bold text-md text-brew-dark">
-                <%= number_to_currency(item.unit_price_cents / 100.0, unit: '$') %> x <%= item.quantity %>
+                <%= number_to_currency(item.unit_price_cents / 100.0, unit: 'R') %> x <%= item.quantity %>
               </p>
               <p class="font-bold text-lg text-brew-dark mt-1">
-                <%= number_to_currency((item.quantity * item.unit_price_cents) / 100.0, unit: '$') %>
+                <%= number_to_currency((item.quantity * item.unit_price_cents) / 100.0, unit: 'R') %>
               </p>
             </div>
           </div>
@@ -42,7 +42,7 @@
           <div class="space-y-4">
             <div class="flex justify-between">
               <span class="text-neutral-600">Subtotal (<%= @cart.line_items.sum(:quantity) %> items)</span>
-              <span class="font-semibold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: '$') %></span>
+              <span class="font-semibold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: 'R') %></span>
             </div>
             
             <div class="flex justify-between">
@@ -59,7 +59,7 @@
             
             <div class="flex justify-between text-lg">
               <span class="font-bold text-brew-dark">Total</span>
-              <span class="font-bold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: '$') %></span>
+              <span class="font-bold text-brew-dark"><%= number_to_currency(@cart.total_cents / 100.0, unit: 'R') %></span>
             </div>
           </div>
           

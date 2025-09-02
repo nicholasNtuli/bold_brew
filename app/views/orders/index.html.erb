@@ -13,7 +13,7 @@
                             </h2>
                         </div>
                         <span class="text-xl font-bold text-brew-dark">
-                            <%= number_to_currency(order.total_cents / 100.0, unit: '$') %>
+                            <%= number_to_currency(order.total_cents / 100.0, unit: 'R') %>
                         </span>
                     </div>
 
@@ -25,7 +25,7 @@
                                     <p class="text-sm text-neutral-600">Quantity: <%= li.quantity %></p>
                                 </div>
                                 <p class="font-bold text-brew-dark">
-                                    <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: '$') %>
+                                    <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: 'R') %>
                                 </p>
                             </div>
                         <% end %>

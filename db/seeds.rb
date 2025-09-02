@@ -21,7 +21,7 @@ flavors.each do |f|
         p.category = coffee
         p.description = "Smooth, low‑acid cold brew."
         p.price_cents = f[:price_cents]
-        p.currency = "usd"
+        p.currency = "zar"
         p.sku = SecureRandom.hex(4)
         p.stock = 50
         p.active = true
@@ -39,7 +39,7 @@ Product.create!(
   price: 1500, # Price in cents
   category: category1,
   active: true,
-  currency: 'usd'
+  currency: 'zar'
 )
 
 Product.create!(
@@ -48,7 +48,7 @@ Product.create!(
   price: 2500, # Price in cents
   category: category2,
   active: true,
-  currency: 'usd'
+  currency: 'zar'
 )
 
 puts "Database seeded successfully!"
