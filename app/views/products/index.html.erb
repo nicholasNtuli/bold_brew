@@ -1,7 +1,27 @@
 <div class="container-custom py-12 px-4">
   <div class="flex items-center justify-between mb-8">
-    <div class="flex space-x-2">
-      <%= link_to 'All', products_path, 
+    <div class="flex sm:hidden space-x-2">
+      <div class="relative">
+        <button id="category-menu-btn" class="flex items-center px-4 py-2 border rounded-full text-brew-black hover:bg-neutral-100 transition-colors">
+          Categories
+          <svg class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+
+        <div id="category-menu" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
+          <div class="py-1">
+            <%= link_to 'All', products_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+            <% @categories.each do |category| %>
+              <%= link_to category.name, products_path(category: category.name), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden sm:flex space-x-2">
+      <%= link_to 'All', products_path,
             class: "px-4 py-2 rounded-full #{params[:category].blank? ? 'bg-gray-200 text-gray-700' : 'text-black'}" %>
       <% @categories.each do |category| %>
         <%= link_to category.name, products_path(category: category.name),
@@ -16,7 +36,6 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
         </svg>
       </button>
-
       <div id="sort-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
         <div class="py-1">
           <%= link_to 'Name (A-Z)', products_path(params.permit(:category).merge(q: { s: 'name asc' })), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
@@ -83,6 +102,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // For sorting dropdown
     const sortBtn = document.getElementById('sort-menu-btn');
     const sortMenu = document.getElementById('sort-menu');
 
@@ -91,9 +111,24 @@
       sortMenu.classList.toggle('hidden');
     });
 
+    // For new category dropdown
+    const categoryBtn = document.getElementById('category-menu-btn');
+    const categoryMenu = document.getElementById('category-menu');
+
+    if (categoryBtn) {
+      categoryBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        categoryMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Close menus if the user clicks outside of them
     document.addEventListener('click', (event) => {
-      if (!sortMenu.contains(event.target) && !sortBtn.contains(event.target)) {
+      if (sortMenu && !sortMenu.contains(event.target) && !sortBtn.contains(event.target)) {
         sortMenu.classList.add('hidden');
+      }
+      if (categoryMenu && !categoryMenu.contains(event.target) && !categoryBtn.contains(event.target)) {
+        categoryMenu.classList.add('hidden');
       }
     });
   });
