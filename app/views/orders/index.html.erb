@@ -21,7 +21,7 @@
                         <% order.order_items.each do |li| %>
                             <div class="flex items-center space-x-4">
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="font-semibold text-brew-dark truncate"><%= li.product_name %></h3>
+                                    <h3 class="font-semibold text-brew-dark truncate"><%= li.product.name %></h3>
                                     <p class="text-sm text-neutral-600">Quantity: <%= li.quantity %></p>
                                 </div>
                                 <p class="font-bold text-brew-dark">

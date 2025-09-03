@@ -1,4 +1,12 @@
 <div class="container-custom py-12 px-4">
+   <h1 class="font-bebas text-5xl text-brew-black mb-8">
+    <% if @category.present? %>
+      <%= @category.name %> Products
+    <% else %>
+      All Products
+    <% end %>
+  </h1>
+
   <div class="flex items-center justify-between mb-8">
     <div class="flex sm:hidden space-x-2">
       <div class="relative">
@@ -72,7 +80,7 @@
                   <% end %>
                 </p>
               </div>
-        
+
               <div class="mt-auto">
                 <p class="font-bold text-lg text-brew-brown">
                   <%= number_to_currency(product.price_cents / 100.0, unit: 'R') %>

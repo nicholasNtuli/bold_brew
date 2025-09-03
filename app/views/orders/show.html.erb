@@ -11,7 +11,7 @@
             <div class="space-y-4 border-b border-neutral-200 pb-6 mb-6">
                 <% @order.line_items.each do |li| %>
                     <div class="flex items-center justify-between">
-                        <span class="text-lg text-brew-dark"><%= li.product_name %> x <%= li.quantity %></span>
+                        <span class="text-lg text-brew-dark"><%= li.product.name %> x <%= li.quantity %></span>
                         <span class="text-lg font-semibold text-brew-dark">
                             <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: 'R') %>
                         </span>

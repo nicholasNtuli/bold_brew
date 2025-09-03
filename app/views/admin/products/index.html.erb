@@ -1,9 +1,9 @@
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="container-custom py-12 px-4">
   <div class="flex justify-between items-center mb-8">
-    <h1 class="text-4xl font-bebas font-bold text-brew-dark">Product Management</h1>
+    <h1 class="font-bebas text-5xl text-brew-black">Product Management</h1>
     <div class="flex space-x-4">
-      <%= link_to 'Manage Categories', admin_categories_path, class: "bg-gray-200 text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-gray-300 transition-colors duration-300" %>
-      <%= link_to 'Add New Product', new_admin_product_path, class: "bg-brew-light text-black font-medium py-2 px-6 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+      <%= link_to 'Manage Categories', admin_categories_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+      <%= link_to 'Add New Product', new_admin_product_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
     </div>
   </div>
 
@@ -40,7 +40,7 @@
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900"><%= product.category.name if product.category.present? %></div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<%= number_with_precision(product.price_cents / 100.0, precision: 2) %></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">R<%= number_with_precision(product.price_cents / 100.0, precision: 2) %></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= product.stock %></td>
             <td class="px-6 py-4 whitespace-nowrap">
               <% if product.active %>

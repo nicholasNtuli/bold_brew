@@ -1,59 +1,67 @@
-<%= form_with model: [:admin, product], class: "space-y-6" do |form| %>
+<div class="container-custom py-12 px-4">
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex space-x-2">
+      <%= link_to 'All', products_path, 
+            class: "px-4 py-2 rounded-full #{params[:category].blank? ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+      <% @categories.each do |category| %>
+        <%= link_to category.name, products_path(category: category.name),
+              class: "px-4 py-2 rounded-full #{params[:category] == category.name ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+      <% end %>
+    </div>
+    
+    <div class="relative">
+      <button id="sort-menu-btn" class="flex items-center px-4 py-2 border rounded-full text-brew-black hover:bg-neutral-100 transition-colors">
+        Sort by
+        <svg class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
 
-  <% if product.errors.any? %>
-    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <p class="font-bold">Please correct the following errors:</p>
-      <ul>
-        <% product.errors.full_messages.each do |message| %>
-          <li class="mt-1 text-sm"><%= message %></li>
-        <% end %>
-      </ul>
+      <div id="sort-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
+        <div class="py-1">
+          <%= link_to 'Newest', products_path(request.query_parameters.merge(q: { s: 'created_at desc' })), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'Name (A-Z)', products_path(request.query_parameters.merge(q: { s: 'name asc' })), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'Price (Low to High)', products_path(request.query_parameters.merge(q: { s: 'price_cents asc' })), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'Price (High to Low)', products_path(request.query_parameters.merge(q: { s: 'price_cents desc' })), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @products.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+      <%= render partial: 'product_card', collection: @products, as: :product %>
+    </div>
+  <% else %>
+    <div class="text-center py-16">
+      <% if @category.present? %>
+        <%= image_tag('coffee-logo.png', alt: 'Coffee Logo', class: 'mx-auto mb-4', width: '200', height: '200') %>
+        <h2 class="text-2xl font-bold text-brew-black mb-4">
+          <%= @category.name %> coming soon!
+        </h2>
+        <p class="text-neutral-600">We’re brewing up something new in this category. Check back later!</p>
+      <% else %>
+        <h2 class="text-2xl font-bold text-brew-black mb-4">No products found.</h2>
+        <p class="text-neutral-600">We’re brewing up something new. Please check back later!</p>
+      <% end %>
     </div>
   <% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :name, class: "sr-only" %>
-    <%= form.text_field :name, placeholder: "Product Name", class: "w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
-  </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sortBtn = document.getElementById('sort-menu-btn');
+    const sortMenu = document.getElementById('sort-menu');
 
-  <div class="field">
-    <%= form.label :description, class: "sr-only" %>
-    <%= form.text_area :description, placeholder: "Product Description", rows: 4, class: "w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
-  </div>
+    sortBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      sortMenu.classList.toggle('hidden');
+    });
 
-  <div class="field">
-    <%= form.label :price_cents, "Price (in cents)", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.number_field :price_cents, placeholder: "e.g., 2999 for $29.99", step: 1, class: "mt-1 w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :category_id, "Category", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: "Select a category" }, class: "mt-1 w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
-  </div>
-
-  <div class="field flex items-center space-x-2">
-    <%= form.check_box :active, class: "h-4 w-4 text-brew-brown border-gray-300 rounded focus:ring-brew-brown" %>
-    <%= form.label :active, "Active", class: "text-sm text-gray-700" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :images, "Product Images", class: "block text-sm font-medium text-gray-700" %>
-    <% if product.images.attached? %>
-      <div class="mt-4 mb-4">
-        <%= image_tag product.images.first, class: "w-32 h-32 object-cover rounded-xl shadow-md" %>
-      </div>
-    <% end %>
-    <%= form.file_field :images, multiple: true, class: "mt-1 w-full p-3 text-sm text-gray-50..." %>
-  </div>
-
-  <%= form.hidden_field :currency, value: "zar" %>
-
-  <div class="actions">
-    <%= form.submit class: "w-full bg-brew-light text-Black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300 cursor-pointer" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :stock, "Stock", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.number_field :stock, placeholder: "e.g., 50", class: "mt-1 w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brew-brown text-brew-dark" %>
-  </div>
-<% end %>
+    document.addEventListener('click', (event) => {
+      if (!sortMenu.contains(event.target) && !sortBtn.contains(event.target)) {
+        sortMenu.classList.add('hidden');
+      }
+    });
+  });
+</script>
