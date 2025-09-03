@@ -16,10 +16,16 @@ class ProductsController < ApplicationController
     end
 
     @q = base_scope.ransack(params[:q])
-    @products = @q.result.includes(:category).order(created_at: :desc)
+    @products = @q.result(distinct: true).includes(:category)
   end
 
   def show
     @product = Product.friendly.find(params[:id])
+  end
+
+  private
+
+  def product_params
+    params.require(:q).permit(:s) if params[:q]
   end
 end
