@@ -1,11 +1,13 @@
-# app/controllers/admin/products_controller.rb
 class Admin::ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin!
   before_action :set_product, only: %i[ edit update destroy ]
 
   def index
-    @products = Product.all.order(created_at: :desc)
+    @categories = Category.all.order(:name)
+    
+    @q = Product.ransack(params[:q])
+    @products = @q.result(distinct: true).includes(:category)
   end
 
   def new
