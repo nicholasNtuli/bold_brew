@@ -168,7 +168,14 @@
               <h3 class="text-xl font-bold text-neutral-900 mb-2">
                 <%= link_to related_product.name, related_product %>
               </h3>
-              <p class="text-neutral-600 mb-4"><%= related_product.description.truncate(80) %></p>
+              <p class="text-neutral-600 mb-4">
+                <% first_sentence = related_product.description.split('.').first.strip %>
+                <% if first_sentence.present? && related_product.description.length > first_sentence.length %>
+                  <%= first_sentence + "." %>
+                <% else %>
+                  <%= related_product.description %>
+                <% end %>
+              </p>
               <p class="font-bold text-lg text-neutral-900">
                 <%= number_to_currency(related_product.price_cents / 100.0, unit: 'R') %>
               </p>
