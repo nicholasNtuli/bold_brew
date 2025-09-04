@@ -2,6 +2,7 @@
   <div class="flex justify-between items-center mb-8">
     <h1 class="font-bebas text-5xl text-brew-black">Product Management</h1>
     <div class="flex space-x-4">
+      <%= link_to 'Manage Orders', admin_orders_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
       <%= link_to 'Manage Categories', admin_categories_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
       <%= link_to 'Add New Product', new_admin_product_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
     </div>
