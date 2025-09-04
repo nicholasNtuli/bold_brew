@@ -1,39 +1,126 @@
 <div class="container-custom py-12 px-4">
-    <h1 class="font-bebas text-5xl text-brew-black mb-8">My Orders</h1>
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="font-bebas text-5xl text-brew-black">My Orders</h1>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm text-neutral-600">Total Orders: <%= @orders.count %></span>
+        </div>
+    </div>
 
     <% if @orders.any? %>
+        <!-- Order Status Filter -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <%= link_to "All", orders_path, 
+                class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status].blank? ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+            <%= link_to "Pending", orders_path(status: 'pending'), 
+                class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status] == 'pending' ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+            <%= link_to "Paid", orders_path(status: 'paid'), 
+                class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status] == 'paid' ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+            <%= link_to "Shipped", orders_path(status: 'shipped'), 
+                class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status] == 'shipped' ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+            <%= link_to "Canceled", orders_path(status: 'canceled'), 
+                class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status] == 'canceled' ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
+        </div>
+
         <div class="space-y-6">
             <% @orders.each do |order| %>
                 <div class="bg-white p-6 rounded-lg shadow-md border border-neutral-200">
-                    <div class="flex justify-between items-center border-b pb-4 mb-4">
-                        <div>
-                            <p class="text-sm text-neutral-600">Order #<%= order.id %></p>
-                            <h2 class="text-lg font-bold text-brew-dark">
-                                <%= order.created_at.strftime('%B %e, %Y') %>
-                            </h2>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b pb-4 mb-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-2 sm:mb-0">
+                            <div>
+                                <p class="text-sm text-neutral-600">Order #<%= order.id %></p>
+                                <h2 class="text-lg font-bold text-brew-dark">
+                                    <%= order.created_at.strftime('%B %e, %Y at %I:%M %p') %>
+                                </h2>
+                            </div>
+                            <div class="mt-2 sm:mt-0">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= order.status_color %>">
+                                    <%= order.formatted_status %>
+                                </span>
+                            </div>
                         </div>
-                        <span class="text-xl font-bold text-brew-dark">
-                            <%= number_to_currency(order.total_cents / 100.0, unit: 'R') %>
-                        </span>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+                            <span class="text-xl font-bold text-brew-dark">
+                                <%= number_to_currency(order.total_in_currency, unit: 'R') %>
+                            </span>
+                            <div class="flex space-x-2 mt-2 sm:mt-0">
+                                <%= link_to "View Details", order_path(order), 
+                                    class: "text-sm bg-brew-light text-black font-medium py-2 px-4 rounded-full shadow-sm hover:bg-brew-dark transition-colors duration-300" %>
+                                <% if order.can_be_canceled? %>
+                                    <%= button_to "Cancel Order", cancel_order_path(order), 
+                                        method: :patch,
+                                        data: { turbo_confirm: "Are you sure you want to cancel this order?" },
+                                        class: "text-sm bg-red-100 text-red-700 font-medium py-2 px-4 rounded-full shadow-sm hover:bg-red-200 transition-colors duration-300" %>
+                                <% end %>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <% order.order_items.each do |li| %>
-                            <div class="flex items-center space-x-4">
+                    <!-- Order Items Summary -->
+                    <div class="space-y-3">
+                        <% order.order_items.limit(3).each do |item| %>
+                            <div class="flex items-center justify-between">
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="font-semibold text-brew-dark truncate"><%= li.product.name %></h3>
-                                    <p class="text-sm text-neutral-600">Quantity: <%= li.quantity %></p>
+                                    <h3 class="font-semibold text-brew-dark truncate"><%= item.name || item.product.name %></h3>
+                                    <p class="text-sm text-neutral-600">Quantity: <%= item.quantity %></p>
                                 </div>
                                 <p class="font-bold text-brew-dark">
-                                    <%= number_to_currency((li.quantity * li.unit_price_cents) / 100.0, unit: 'R') %>
+                                    <%= number_to_currency((item.quantity * item.unit_price_cents) / 100.0, unit: 'R') %>
+                                </p>
+                            </div>
+                        <% end %>
+                        
+                        <% if order.order_items.count > 3 %>
+                            <div class="text-center py-2">
+                                <p class="text-sm text-neutral-500">
+                                    ... and <%= order.order_items.count - 3 %> more item<%= 's' if order.order_items.count - 3 > 1 %>
                                 </p>
                             </div>
                         <% end %>
                     </div>
+
+                    <!-- Order Timeline for shipped orders -->
+                    <% if order.shipped? %>
+                        <div class="mt-4 pt-4 border-t border-neutral-200">
+                            <h4 class="text-sm font-medium text-brew-dark mb-2">Order Timeline</h4>
+                            <div class="flex items-center space-x-4 text-xs text-neutral-600">
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Ordered</span>
+                                </div>
+                                <div class="flex-1 border-t border-neutral-300"></div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Paid</span>
+                                </div>
+                                <div class="flex-1 border-t border-neutral-300"></div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Shipped</span>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
                 </div>
             <% end %>
         </div>
+
+        <!-- Pagination would go here if needed -->
+        <div class="mt-8 text-center">
+            <p class="text-sm text-neutral-500">
+                Showing <%= @orders.count %> order<%= 's' if @orders.count != 1 %>
+            </p>
+        </div>
+
     <% else %>
-        <p class="text-neutral-600 text-center py-12">You have not placed any orders yet.</p>
+        <div class="text-center py-16">
+            <div class="w-24 h-24 bg-brew-light rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-brew-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-brew-dark mb-4">No orders yet</h2>
+            <p class="text-neutral-600 mb-8">You haven't placed any orders yet. Start shopping to see your orders here.</p>
+            <%= link_to "Start Shopping", products_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+        </div>
     <% end %>
 </div>

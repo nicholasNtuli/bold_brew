@@ -1,0 +1,191 @@
+<div class="container-custom py-12 px-4">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="font-bebas text-5xl text-brew-brown mb-2">Order #<%= @order.id %></h1>
+      <div class="flex items-center space-x-4">
+        <span class="text-lg text-neutral-600">Customer: <%= @order.user.email %></span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= @order.status_color %>">
+          <%= @order.formatted_status %>
+        </span>
+      </div>
+    </div>
+    <div class="flex space-x-3">
+      <%= link_to "← Back to Orders", admin_orders_path, 
+            class: "text-sm bg-neutral-100 text-neutral-700 font-medium py-2 px-4 rounded-full shadow-sm hover:bg-neutral-200 transition-colors duration-300" %>
+      
+      <% if @order.pending? %>
+        <%= button_to "Mark as Paid", mark_as_paid_admin_order_path(@order), 
+              method: :patch,
+              class: "text-sm bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-full shadow-sm hover:bg-blue-200 transition-colors duration-300" %>
+      <% end %>
+      
+      <% if @order.paid? %>
+        <%= button_to "Mark as Shipped", mark_as_shipped_admin_order_path(@order), 
+              method: :patch,
+              class: "text-sm bg-green-100 text-green-700 font-medium py-2 px-4 rounded-full shadow-sm hover:bg-green-200 transition-colors duration-300" %>
+      <% end %>
+      
+      <% if @order.can_be_canceled? %>
+        <%= button_to "Cancel Order", cancel_admin_order_path(@order), 
+              method: :patch,
+              data: { turbo_confirm: "Are you sure you want to cancel this order?" },
+              class: "text-sm bg-red-100 text-red-700 font-medium py-2 px-4 rounded-full shadow-sm hover:bg-red-200 transition-colors duration-300" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Order Items -->
+    <div class="lg:col-span-2">
+      <div class="bg-white p-8 rounded-lg shadow-md border border-neutral-200">
+        <h2 class="text-2xl font-bold text-brew-dark mb-6">Order Items</h2>
+        
+        <div class="space-y-6">
+          <% @order.order_items.each do |item| %>
+            <div class="flex items-center space-x-4 pb-6 border-b border-neutral-200 last:border-b-0 last:pb-0">
+              <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-neutral-100">
+                <% if item.product.images.attached? %>
+                  <%= image_tag item.product.images.first.variant(resize_to_fill: [64, 64]).processed,
+                      class: "w-full h-full object-cover" %>
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-neutral-400 text-xs">
+                    No Image
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-brew-dark"><%= item.name || item.product.name %></h3>
+                <p class="text-sm text-neutral-600">
+                  <%= item.product.category.name if item.product.category %>
+                </p>
+                <p class="text-sm text-neutral-600 mt-1">
+                  SKU: <%= item.product.sku if item.product.sku %>
+                </p>
+                <p class="text-sm text-neutral-600">
+                  Quantity: <%= item.quantity %> × <%= number_to_currency(item.unit_price_cents / 100.0, unit: 'R') %>
+                </p>
+              </div>
+              
+              <div class="text-right flex-shrink-0">
+                <p class="font-bold text-lg text-brew-dark">
+                  <%= number_to_currency((item.quantity * item.unit_price_cents) / 100.0, unit: 'R') %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Order Details -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Order Summary -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-neutral-200">
+        <h3 class="text-xl font-bold text-brew-dark mb-4">Order Summary</h3>
+        
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-neutral-600">Subtotal (<%= @order.order_items.sum(:quantity) %> items)</span>
+            <span class="font-semibold text-brew-dark">
+              <%= number_to_currency(@order.total_in_currency, unit: 'R') %>
+            </span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-neutral-600">Shipping</span>
+            <span class="font-semibold text-green-600">Free</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-neutral-600">Tax</span>
+            <span class="font-semibold text-neutral-600">Included</span>
+          </div>
+          
+          <hr class="border-neutral-200">
+          
+          <div class="flex justify-between text-lg">
+            <span class="font-bold text-brew-dark">Total</span>
+            <span class="font-bold text-brew-dark">
+              <%= number_to_currency(@order.total_in_currency, unit: 'R') %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Information -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-neutral-200">
+        <h3 class="text-xl font-bold text-brew-dark mb-4">Customer Information</h3>
+        
+        <div class="space-y-3 text-sm">
+          <div>
+            <span class="text-neutral-600">Email:</span>
+            <p class="font-medium text-brew-dark"><%= @order.user.email %></p>
+          </div>
+          
+          <div>
+            <span class="text-neutral-600">Customer Since:</span>
+            <p class="font-medium text-brew-dark">
+              <%= @order.user.created_at.strftime('%B %Y') %>
+            </p>
+          </div>
+          
+          <div>
+            <span class="text-neutral-600">Total Orders:</span>
+            <p class="font-medium text-brew-dark">
+              <%= @order.user.orders.count %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Information -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-neutral-200">
+        <h3 class="text-xl font-bold text-brew-dark mb-4">Order Information</h3>
+        
+        <div class="space-y-3 text-sm">
+          <div>
+            <span class="text-neutral-600">Order Date:</span>
+            <p class="font-medium text-brew-dark">
+              <%= @order.created_at.strftime('%B %e, %Y at %I:%M %p') %>
+            </p>
+          </div>
+          
+          <div>
+            <span class="text-neutral-600">Order Status:</span>
+            <p class="font-medium">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @order.status_color %>">
+                <%= @order.formatted_status %>
+              </span>
+            </p>
+          </div>
+          
+          <div>
+            <span class="text-neutral-600">Last Updated:</span>
+            <p class="font-medium text-brew-dark">
+              <%= @order.updated_at.strftime('%B %e, %Y at %I:%M %p') %>
+            </p>
+          </div>
+          
+          <% if @order.payment_intent_id %>
+            <div>
+              <span class="text-neutral-600">Payment ID:</span>
+              <p class="font-medium text-brew-dark font-mono text-xs">
+                <%= @order.payment_intent_id %>
+              </p>
+            </div>
+          <% end %>
+          
+          <% if @order.checkout_session_id %>
+            <div>
+              <span class="text-neutral-600">Checkout Session:</span>
+              <p class="font-medium text-brew-dark font-mono text-xs">
+                <%= @order.checkout_session_id %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

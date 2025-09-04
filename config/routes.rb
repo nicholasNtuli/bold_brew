@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "orders/index"
-  get "orders/show"
   devise_for :users
 
   root "home#index"
@@ -16,7 +14,12 @@ Rails.application.routes.draw do
   end
 
   resources :checkouts, only: [:create]
-  resources :orders, only: [:index, :show]
+  
+  resources :orders, only: [:index, :show] do
+    member do
+      patch :cancel
+    end
+  end
 
   get "/about" => "static_pages#about", as: :about
   get "/contact" => "static_pages#contact", as: :contact
@@ -28,10 +31,16 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :products
     resources :categories
+    
+    # Admin order management
+    resources :orders, only: [:index, :show] do
+      member do
+        patch :mark_as_paid
+        patch :mark_as_shipped
+        patch :cancel
+      end
+    end
   end
-  # devise_scope :user do
-  #   get 'sign_out', to: 'sessions#destroy'
-  # end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
