@@ -6,10 +6,8 @@ class Admin::OrdersController < ApplicationController
   def index
     @orders = Order.includes(:user, :order_items).order(created_at: :desc)
     
-    # Filter by status if provided
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     
-    # Search functionality
     if params[:search].present?
       @orders = @orders.joins(:user).where(
         "users.email ILIKE ? OR orders.id::text ILIKE ?", 

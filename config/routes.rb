@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get "/about" => "static_pages#about", as: :about
   get "/contact" => "static_pages#contact", as: :contact
   get 'checkouts', to: 'checkouts#show'
+  get 'checkouts/success', to: 'checkouts#success', as: 'checkouts_success'
 
   # Stripe webhooks
   mount StripeEvent::Engine, at: "/stripe/webhooks", to: "stripe_webhooks#create"

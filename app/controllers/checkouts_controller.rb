@@ -12,8 +12,7 @@ class CheckoutsController < ApplicationController
             redirect_to cart_path, alert: "Your cart is empty and cannot be checked out."
             return
         end
-
-        # Create the line items array for Stripe from the cart's line items.
+        
         line_items_for_stripe = @cart.line_items.includes(:product).map do |line_item|
             {
                 quantity: line_item.quantity,
@@ -30,15 +29,13 @@ class CheckoutsController < ApplicationController
 
         session_params = {
             mode: 'payment',
-            success_url: orders_url + '?success=1',
+            success_url: checkouts_success_url + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url: cart_url,
             line_items: line_items_for_stripe
         }
         
-        # This will create a new Stripe Checkout Session.
         session = Stripe::Checkout::Session.create(session_params)
 
-        # Create a new Order in your database.
         order = Order.create!(
             user: current_user,
             status: 'pending',
@@ -47,7 +44,33 @@ class CheckoutsController < ApplicationController
             checkout_session_id: session.id
         )
 
-        # Redirect the user to the Stripe Checkout page.
         redirect_to session.url, allow_other_host: true
+    end
+
+    def success
+        ActiveRecord::Base.transaction do
+            stripe_session = Stripe::Checkout::Session.retrieve(params[:session_id])
+            order = Order.find_by!(checkout_session_id: stripe_session.id)
+
+            order.update!(status: 'paid')
+            
+            current_cart.line_items.each do |line_item|
+                order.order_items.create!(
+                    product: line_item.product,
+                    quantity: line_item.quantity,
+                    unit_price_cents: line_item.unit_price_cents
+                )
+
+                product = line_item.product
+                product.stock -= line_item.quantity
+                product.save!
+            end
+
+            current_cart.destroy!
+
+            redirect_to order_path(order), notice: "Your order has been placed successfully!"
+        end
+    rescue ActiveRecord::RecordInvalid => e
+        redirect_to cart_path, alert: "There was an issue processing your order. Please try again. Error: #{e.message}"
     end
 end
