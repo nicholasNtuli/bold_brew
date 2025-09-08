@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     delete :remove_item
     delete :empty
   end
+  
+  resource :profile, only: [:show, :edit, :update] do
+    delete :destroy_account, on: :collection
+  end
 
   resources :checkouts, only: [:create]
   
@@ -30,6 +34,7 @@ Rails.application.routes.draw do
   mount StripeEvent::Engine, at: "/stripe/webhooks", to: "stripe_webhooks#create"
 
   namespace :admin do
+    resources :users
     resources :products
     resources :categories
     
@@ -50,9 +55,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end

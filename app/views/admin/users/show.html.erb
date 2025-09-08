@@ -1,0 +1,28 @@
+<div class="container-custom py-12 px-4">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="font-bebas text-5xl text-brew-black">User Details</h1>
+    <div class="flex space-x-4">
+      <%= link_to '← Back to Users', admin_users_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <h2 class="text-2xl font-semibold mb-2">User Information</h2>
+        <div class="text-neutral-600">
+          <p><strong>Email:</strong> <%= @user.email %></p>
+          <p><strong>Role:</strong> <%= @user.role.capitalize %></p>
+          <p><strong>Registered:</strong> <%= @user.created_at.strftime('%B %e, %Y') %></p>
+        </div>
+      </div>
+      <div>
+        <h2 class="text-2xl font-semibold mb-2">Manage Role</h2>
+        <%= form_with model: @user, url: admin_user_path(@user), method: :patch, local: true, class: "flex items-center space-x-4" do |form| %>
+          <%= form.select :role, User.roles.keys.map { |role| [role.capitalize, role] }, {}, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-brew-dark focus:ring-brew-dark sm:text-sm" %>
+          <%= form.submit "Update Role", class: "bg-brew-dark text-white font-medium py-2 px-4 rounded-lg cursor-pointer hover:bg-brew-brown transition-colors duration-300" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
