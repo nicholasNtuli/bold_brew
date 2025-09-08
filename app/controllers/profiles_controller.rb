@@ -11,8 +11,8 @@ class ProfilesController < ApplicationController
 
   def update
     @user = current_user
-    if @user.update(profile_params)
-      redirect_to profile_path, notice: 'Your profile was successfully updated.'
+    if @user.update(user_params)
+      redirect_to profile_path, notice: 'Profile updated successfully.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -21,7 +21,6 @@ class ProfilesController < ApplicationController
   def destroy_account
     @user = current_user
     if @user.destroy
-      # Sign out the user after they delete their account
       sign_out(@user)
       redirect_to root_path, notice: 'Your account has been successfully deleted.', status: :see_other
     else
@@ -31,8 +30,7 @@ class ProfilesController < ApplicationController
 
   private
 
-  def profile_params
-    # Allows a user to update their email
-    params.require(:user).permit(:email)
+  def user_params
+    params.require(:user).permit(:username, :phone_number, :email, :password, :password_confirmation, :profile_picture)
   end
 end

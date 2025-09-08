@@ -6,16 +6,28 @@
     </div>
   </div>
 
-  <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div>
-        <h2 class="text-2xl font-semibold mb-2">My Information</h2>
-        <div class="text-neutral-600">
-          <p><strong>Email:</strong> <%= @user.email %></p>
-          <p><strong>Role:</strong> <%= @user.role.capitalize %></p>
-          <p><strong>Joined:</strong> <%= @user.created_at.strftime('%B %e, %Y') %></p>
-        </div>
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto text-center">
+    <!-- Profile Image -->
+    <% if @user.profile_picture.attached? %>
+      <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), class: "mx-auto rounded-full shadow-md mb-4" %>
+    <% else %>
+      <div class="w-28 h-28 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/>
+        </svg>
       </div>
+    <% end %>
+
+    <!-- Username -->
+    <h2 class="text-2xl font-semibold text-brew-dark mb-2">
+      <%= @user.username.presence || "No username set" %>
+    </h2>
+
+    <div class="text-neutral-600 text-left mt-6">
+      <p><strong>Email:</strong> <%= @user.email %></p>
+      <p><strong>Phone:</strong> <%= @user.phone_number.presence || "Not provided" %></p>
+      <p><strong>Role:</strong> <%= @user.role.capitalize %></p>
+      <p><strong>Joined:</strong> <%= @user.created_at.strftime('%B %e, %Y') %></p>
     </div>
   </div>
 </div>

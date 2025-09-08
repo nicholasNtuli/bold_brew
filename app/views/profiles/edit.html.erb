@@ -1,42 +1,71 @@
 <div class="container-custom py-12 px-4">
   <div class="flex justify-between items-center mb-8">
     <h1 class="font-bebas text-5xl text-brew-black">Edit Profile</h1>
-    <div class="flex space-x-4">
-      <%= link_to '← Back to Profile', profile_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
-    </div>
+    <%= link_to 'Back to Profile', profile_path, class: "bg-gray-200 text-brew-dark font-medium py-2 px-6 rounded-full shadow hover:bg-gray-300 transition-colors duration-300" %>
   </div>
 
-  <div class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
-    <%= form_with model: @user, url: profile_path, method: :patch, local: true do |form| %>
+  <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
+    <%= form_for(@user, url: profile_path, html: { multipart: true }) do |f| %>
       <% if @user.errors.any? %>
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-          <strong class="font-bold">Error!</strong>
-          <span class="block sm:inline">
-            <%= @user.errors.full_messages.join(', ') %>
-          </span>
+        <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
+          <h2 class="font-semibold mb-2"><%= pluralize(@user.errors.count, "error") %> prevented this profile from being saved:</h2>
+          <ul class="list-disc list-inside">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
         </div>
       <% end %>
 
-      <div class="mb-4">
-        <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
-        <%= form.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brew-dark focus:ring-brew-dark sm:text-sm" %>
+      <!-- Profile Picture Preview -->
+      <div class="mb-6 text-center">
+        <% if @user.profile_picture.attached? && @user.profile_picture.blob.persisted? %>
+          <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), class: "mx-auto rounded-full shadow-md mb-4" %>
+        <% else %>
+          <div class="w-28 h-28 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/>
+            </svg>
+          </div>
+        <% end %>
+
+        <%= f.file_field :profile_picture, class: "mt-2 text-sm text-gray-600" %>
       </div>
 
+      <!-- Username -->
       <div class="mb-4">
-        <%= form.label :role, class: "block text-sm font-medium text-gray-700" %>
-        <%= form.select :role, User.roles.keys.map { |role| [role.capitalize, role] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brew-dark focus:ring-brew-dark sm:text-sm" %>
+        <%= f.label :username, "Username", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.text_field :username, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
-      
-      <%= form.submit "Update Profile", class: "w-full bg-brew-dark text-white font-medium py-2 px-4 rounded-lg cursor-pointer hover:bg-brew-brown transition-colors duration-300" %>
+
+      <!-- Phone -->
+      <div class="mb-4">
+        <%= f.label :phone_number, "Phone Number", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.text_field :phone_number, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <%= f.label :email, "Email", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.email_field :email, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <%= f.label :password, "Password (leave blank if unchanged)", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-6">
+        <%= f.label :password_confirmation, "Confirm Password", class: "block text-gray-700 font-medium mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex justify-center">
+        <%= f.submit "Update Profile", class: "bg-brew-dark text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-brown transition-colors duration-300" %>
+      </div>
     <% end %>
-
-    <!-- Account Deletion -->
-    <div class="mt-8 border-t pt-8 border-gray-200">
-      <h2 class="text-2xl font-semibold mb-2 text-red-600">Danger Zone</h2>
-      <p class="text-neutral-600 mb-4">
-        Deleting your account is permanent. All your data will be removed.
-      </p>
-      <%= button_to 'Delete Account', destroy_account_profile_path, method: :delete, data: { confirm: 'Are you absolutely sure you want to delete your account?' }, class: "w-full bg-red-600 text-white font-medium py-2 px-4 rounded-lg cursor-pointer hover:bg-red-700 transition-colors duration-300" %>
-    </div>
   </div>
 </div>
