@@ -63,12 +63,14 @@
       <% end %>
 
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-button" type="button" class="md:hidden text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brew-brown">
+      <button id="mobile-menu-button" type="button" class="md:hidden text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brew-brown" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
-        <svg class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <!-- Menu open icon -->
+        <svg id="menu-open-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <svg class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <!-- Menu close icon -->
+        <svg id="menu-close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -76,8 +78,8 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu md:hidden hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1">
+  <div class="md:hidden hidden" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
       <%= link_to "Home", root_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(root_path)}" %>
       <%= link_to "Shop", products_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(products_path)}" %>
       <%= link_to "About", about_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(about_path)}" %>
@@ -99,43 +101,55 @@
 </header>
 
 <script>
-  document.addEventListener('turbo:load', () => {
+  // Use both DOMContentLoaded and turbo:load to ensure compatibility
+  function initMobileMenu() {
     const button = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
-    const openIcon = button.querySelector('svg.block');
-    const closeIcon = button.querySelector('svg.hidden');
+    const openIcon = document.getElementById('menu-open-icon');
+    const closeIcon = document.getElementById('menu-close-icon');
 
-    button.addEventListener('click', () => {
+    if (!button || !menu || !openIcon || !closeIcon) return;
+
+    // Remove any existing event listeners
+    button.removeEventListener('click', toggleMenu);
+    
+    function toggleMenu(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const isHidden = menu.classList.contains('hidden');
+      
       if (isHidden) {
+        // Show menu
         menu.classList.remove('hidden');
-        menu.classList.add('animate-slide-down');
         openIcon.classList.add('hidden');
         closeIcon.classList.remove('hidden');
+        button.setAttribute('aria-expanded', 'true');
       } else {
+        // Hide menu
         menu.classList.add('hidden');
         openIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    }
+    
+    // Add event listener
+    button.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!button.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add('hidden');
+        openIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
       }
     });
+  }
 
-    // Add Tailwind custom animation for a smoother effect
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes slideDown {
-        from {
-          transform: translateY(-100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      .animate-slide-down {
-        animation: slideDown 0.3s ease-out;
-      }
-    `;
-    document.head.appendChild(style);
-  });
+  // Initialize on both events
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
+  document.addEventListener('turbo:load', initMobileMenu);
+  document.addEventListener('turbo:render', initMobileMenu);
 </script>
