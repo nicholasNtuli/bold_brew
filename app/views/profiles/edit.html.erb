@@ -5,7 +5,7 @@
   </div>
 
   <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
-    <%= form_for(@user, url: profile_path, html: { multipart: true }) do |f| %>
+    <%= form_with url: profile_path, method: :patch, local: true, multipart: true do |f| %>
       <% if @user.errors.any? %>
         <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
           <h2 class="font-semibold mb-2"><%= pluralize(@user.errors.count, "error") %> prevented this profile from being saved:</h2>
@@ -16,8 +16,7 @@
           </ul>
         </div>
       <% end %>
-      
-      <!-- Profile Picture Upload + Preview -->
+
       <div class="mb-6 text-center">
         <% if @user.profile_picture.attached? %>
           <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), id: "profile-picture-preview", class: "mx-auto rounded-full shadow-md mb-4" %>
@@ -26,45 +25,60 @@
         <% end %>
 
         <%= f.file_field :profile_picture, id: "profile-picture-input", class: "mt-2 text-sm text-gray-600" %>
-
-        <!-- Hidden field for cropped image data -->
         <%= f.hidden_field :cropped_image_data, id: "cropped-image-data" %>
       </div>
 
-      <!-- Username -->
       <div class="mb-4">
         <%= f.label :username, "Username", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.text_field :username, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+        <%= f.text_field :username, value: @user.username, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
 
-      <!-- Phone -->
       <div class="mb-4">
         <%= f.label :phone_number, "Phone Number", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.text_field :phone_number, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+        <%= f.text_field :phone_number, value: @user.phone_number, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
 
-      <!-- Email -->
       <div class="mb-4">
         <%= f.label :email, "Email", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.email_field :email, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
+        <%= f.email_field :email, value: @user.email, class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
 
-      <!-- Password -->
       <div class="mb-4">
         <%= f.label :password, "Password (leave blank if unchanged)", class: "block text-gray-700 font-medium mb-1" %>
         <%= f.password_field :password, autocomplete: "new-password", class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
 
-      <!-- Confirm Password -->
       <div class="mb-6">
         <%= f.label :password_confirmation, "Confirm Password", class: "block text-gray-700 font-medium mb-1" %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border-gray-300 rounded-lg shadow-sm focus:ring-brew-dark focus:border-brew-dark" %>
       </div>
 
-      <!-- Submit -->
       <div class="flex justify-center">
         <%= f.submit "Update Profile", class: "bg-brew-dark text-white font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-brown transition-colors duration-300" %>
       </div>
+    <% end %>
+
+  <div class="border-t border-gray-100 my-6"></div>
+
+  <div class="text-center">
+    <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md">
+      <p class="font-bold">Warning: Account Deletion</p>
+      <p class="text-sm mt-1">
+        Deleting your account is permanent. All personal data, order history, and saved information will be erased.
+      </p>
+      <% if @user.orders.exists? %>
+        <p class="text-sm mt-2 text-red-800 font-medium">
+          ⚠️ You have <%= pluralize(@user.orders.count, "active order") %>. Account deletion is disabled until all orders are removed.
+        </p>
+      <% end %>
+    </div>
+
+    <%= form_tag destroy_account_profile_path,
+                method: :delete,
+                data: { turbo_confirm: "Are you sure you want to permanently delete your account? This action cannot be undone." } do %>
+      <%= submit_tag "Delete Account",
+          class: "text-white bg-red-600 font-medium py-2 px-8 rounded-full hover:bg-red-700 transition-colors duration-300 #{'opacity-50 cursor-not-allowed' if @user.orders.exists?}",
+          disabled: @user.orders.exists? %>
     <% end %>
   </div>
 </div>

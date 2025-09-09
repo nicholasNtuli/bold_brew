@@ -25,11 +25,23 @@ class ProfilesController < ApplicationController
 
   def destroy_account
     @user = current_user
+
     if @user.destroy
-      sign_out(@user)
-      redirect_to root_path, notice: 'Your account has been successfully deleted.', status: :see_other
+      reset_session
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Your account has been successfully deleted." }
+        format.turbo_stream { redirect_to root_path, notice: "Your account has been successfully deleted." }
+      end
     else
-      redirect_to profile_path, alert: 'There was a problem deleting your account.', status: :unprocessable_entity
+      # If destroy is aborted (user has orders)
+      error_message = @user.errors.full_messages.to_sentence.presence || "Cannot delete account."
+      respond_to do |format|
+        format.html { redirect_to profile_path, alert: error_message, status: :unprocessable_entity }
+        format.turbo_stream do
+          flash.now[:alert] = error_message
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash")
+        end
+      end
     end
   end
 

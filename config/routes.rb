@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   end
   
   resource :profile, only: [:show, :edit, :update] do
-    delete :destroy_account, on: :collection
+    member do
+      delete :destroy_account
+    end
   end
 
   resources :checkouts, only: [:create]

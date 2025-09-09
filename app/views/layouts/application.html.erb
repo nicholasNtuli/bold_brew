@@ -36,9 +36,16 @@
   <body class="min-h-full bg-white text-brew-dark font-inter antialiased">
     <div class="min-h-screen flex flex-col">
       <%= render "shared/navbar" %>
+
+      <!-- Flash messages -->
+      <div class="container-custom py-4 px-4">
+        <%= render "shared/flash" %>
+      </div>
+
       <main class="flex-1">
         <%= yield %>
       </main>
+
       <%= render "shared/footer" %>
     </div>
   </body>
