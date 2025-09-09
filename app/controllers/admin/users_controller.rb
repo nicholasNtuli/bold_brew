@@ -25,11 +25,23 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-    # Use a specific set of strong parameters for admin user updates
-    if @user.update(admin_user_params)
-      redirect_to admin_user_path(@user), notice: 'User was successfully updated.'
+    if params[:user][:cropped_image_data].present?
+      image_data = params[:user][:cropped_image_data]
+      decoded_image = Base64.decode64(image_data.split(",")[1])
+
+      filename = "profile_#{@user.id}.png"
+      tempfile = Tempfile.new([filename, ".png"])
+      tempfile.binmode
+      tempfile.write(decoded_image)
+      tempfile.rewind
+
+      @user.profile_picture.attach(io: tempfile, filename: filename, content_type: "image/png")
+    end
+
+    if @user.update(user_params)
+      redirect_to @user, notice: "Profile updated!"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
@@ -39,12 +51,12 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-
   def set_user
     @user = User.find(params[:id])
   end
 
+  private
   def admin_user_params
-    params.require(:user).permit(:role, :email)
+    params.require(:user).permit(:role, :email, :username, :phone_number, :password, :password_confirmation, :cropped_image_data, :profile_picture)
   end
 end

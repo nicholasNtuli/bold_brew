@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+import "./controllers/profile_picture_cropper"
 
 const application = Application.start()
 

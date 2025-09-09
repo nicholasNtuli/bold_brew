@@ -29,9 +29,10 @@
       .font-bebas { font-family: 'Bebas Neue', sans-serif; }
     </style>
 
-    <!-- The conflicting line has been removed -->
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
   </head>
+
   <body class="min-h-full bg-white text-brew-dark font-inter antialiased">
     <div class="min-h-screen flex flex-col">
       <%= render "shared/navbar" %>

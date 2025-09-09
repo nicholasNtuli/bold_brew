@@ -16,20 +16,19 @@
           </ul>
         </div>
       <% end %>
-
-      <!-- Profile Picture Preview -->
+      
+      <!-- Profile Picture Upload + Preview -->
       <div class="mb-6 text-center">
-        <% if @user.profile_picture.attached? && @user.profile_picture.blob.persisted? %>
-          <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), class: "mx-auto rounded-full shadow-md mb-4" %>
+        <% if @user.profile_picture.attached? %>
+          <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), id: "profile-picture-preview", class: "mx-auto rounded-full shadow-md mb-4" %>
         <% else %>
-          <div class="w-28 h-28 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/>
-            </svg>
-          </div>
+          <img id="profile-picture-preview" class="mx-auto rounded-full shadow-md mb-4 w-28 h-28 object-cover bg-gray-200" />
         <% end %>
 
-        <%= f.file_field :profile_picture, class: "mt-2 text-sm text-gray-600" %>
+        <%= f.file_field :profile_picture, id: "profile-picture-input", class: "mt-2 text-sm text-gray-600" %>
+
+        <!-- Hidden field for cropped image data -->
+        <%= f.hidden_field :cropped_image_data, id: "cropped-image-data" %>
       </div>
 
       <!-- Username -->
