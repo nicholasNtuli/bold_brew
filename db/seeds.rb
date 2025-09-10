@@ -54,8 +54,9 @@ Product.create!(
 puts "Database seeded successfully!"
 
 puts "Creating admin user..."
-User.find_or_create_by!(email: "admin@boldbrew.com") do |user|
-  user.password = "SecurePassword123!"
-  user.password_confirmation = "SecurePassword123!"
-  user.role = :admin
-end
+admin = User.find_or_initialize_by(email: "admin@boldbrew.com")
+admin.password = "SecurePassword123!"
+admin.password_confirmation = "SecurePassword123!"
+admin.role = :admin
+admin.save!
+

@@ -23,5 +23,8 @@ module BoldBrew
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Ensure all image assets are precompiled for production
+    config.assets.precompile += %w[*.jpg *.jpeg *.png *.gif *.svg *.webp]
   end
 end
