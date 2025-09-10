@@ -49,6 +49,13 @@ class Admin::ProductsController < ApplicationController
     redirect_to admin_products_path, notice: 'Product was successfully deleted.', status: :see_other
   end
 
+  def cleanup_images
+    Product.all.each do |product|
+      product.images.purge
+    end
+    redirect_to admin_products_path, notice: "All broken product image links have been removed."
+  end
+
   private
 
   def set_product
