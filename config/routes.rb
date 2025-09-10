@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :products do
-      get :cleanup_images, on: :collection
+      delete 'images/:image_id', to: 'products#purge_image', on: :member, as: :purge_image
     end
     resources :categories
     
