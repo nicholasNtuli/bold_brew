@@ -26,5 +26,6 @@ module BoldBrew
 
     # Ensure all image assets are precompiled for production
     config.assets.precompile += %w[*.jpg *.jpeg *.png *.gif *.svg *.webp]
+    config.assets.paths << Rails.root.join("app", "assets", "images")
   end
 end
