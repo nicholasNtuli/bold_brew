@@ -1,42 +1,21 @@
 class SeedsController < ApplicationController
-  # Prevent unauthorized access
-  before_action :authorize_seed_key
-
+  skip_before_action :verify_authenticity_token  
   def run
-    # Seed categories & products
-    coffee = Category.find_or_create_by!(name: "Coffee")
-    flavors = [
-      { name: "Bold Brew Original", price_cents: 1499 },
-      { name: "Vanilla Cold Brew", price_cents: 1599 },
-      { name: "Mocha Cold Brew", price_cents: 1599 },
-      { name: "Caramel Cold Brew", price_cents: 1699 }
-    ]
+    if params[:key] == ENV['SEED_API_KEY']
+      begin
+        # Ensure the admin user exists
+        admin = User.find_or_initialize_by(email: 'admin@boldbrew.com')
+        admin.password = 'SecurePassword123!'
+        admin.password_confirmation = 'SecurePassword123!'
+        admin.role = :admin
+        admin.save!
 
-    flavors.each do |f|
-      Product.find_or_create_by!(name: f[:name]) do |p|
-        p.category = coffee
-        p.description = "Smooth, low‑acid cold brew."
-        p.price_cents = f[:price_cents]
-        p.currency = "zar"
-        p.sku = SecureRandom.hex(4)
-        p.stock = 50
-        p.active = true
+        render json: { message: 'Admin user seeded successfully.' }, status: :ok
+      rescue => e
+        render json: { error: "Failed to seed admin user: #{e.message}" }, status: :unprocessable_entity
       end
+    else
+      render json: { error: 'Unauthorized' }, status: :unauthorized
     end
-
-    # Seed admin user
-    User.find_or_create_by!(email: "admin@boldbrew.com") do |user|
-      user.password = "SecurePassword123!"
-      user.password_confirmation = "SecurePassword123!"
-      user.role = :admin
-    end
-
-    render plain: "Seeded successfully!"
-  end
-
-  private
-
-  def authorize_seed_key
-    head(:forbidden) unless params[:key] == ENV["SEED_KEY"]
   end
 end
