@@ -1,16 +1,21 @@
 class SeedsController < ApplicationController
-  skip_before_action :verify_authenticity_token  
+  # Prevent unauthorized access
+  before_action :authorize_seed_key
 
   def run
-    if params[:key] == ENV['SEED_KEY']
-      begin
-        Rails.application.load_seed
-        render json: { message: 'Database seeded successfully.' }, status: :ok
-      rescue => e
-        render json: { error: "Failed to seed database: #{e.message}" }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+    # Seed admin user
+    User.find_or_create_by!(email: "admin@boldbrew.com") do |user|
+      user.password = "SecurePassword123!"
+      user.password_confirmation = "SecurePassword123!"
+      user.role = :admin
     end
+
+    render plain: "Seeded successfully!"
+  end
+
+  private
+
+  def authorize_seed_key
+    head(:forbidden) unless params[:key] == ENV["SEED_KEY"]
   end
 end
