@@ -1,7 +1,7 @@
 class Admin::ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin!
-  before_action :set_product, only: %i[ edit update destroy ]
+  before_action :set_product, only: %i[ edit update destroy destroy_image ] 
 
   def index
     @categories = Category.all.order(:name)
@@ -48,6 +48,12 @@ class Admin::ProductsController < ApplicationController
     @product.destroy
     redirect_to admin_products_path, notice: 'Product was successfully deleted.', status: :see_other
   end
+  
+  def destroy_image
+    image = @product.images.find(params[:image_id])
+    image.purge
+    redirect_to edit_admin_product_path(@product), notice: "Image was successfully deleted."
+  end
 
   private
 
@@ -56,12 +62,6 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :active, :stock, images: [])
-  end
-
-  def authorize_admin!
-    unless current_user.admin?
-      redirect_to root_path, alert: "You are not authorized to access this page."
-    end
+    params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :stock, :active, images: [])
   end
 end
