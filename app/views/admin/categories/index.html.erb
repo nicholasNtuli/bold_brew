@@ -1,7 +1,10 @@
 <div class="container-custom py-12 px-4">
   <div class="flex justify-between items-center mb-8">
     <h1 class="font-bebas text-5xl text-brew-black">Category Management</h1>
-    <%= link_to 'Add New Category', new_admin_category_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    <div class="flex space-x-4">
+      <%= link_to 'Manage Products', admin_products_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+      <%= link_to 'Add New Category', new_admin_category_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    </div>
   </div>
 
   <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
