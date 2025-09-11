@@ -94,4 +94,6 @@ Rails.application.configure do
 
   # Compile assets on the fly if missing
   config.assets.compile = true
+
+  config.active_storage.service = :cloudinary
 end

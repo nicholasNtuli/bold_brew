@@ -70,6 +70,8 @@ gem "friendly_id", "~> 5.4"
 gem "stripe"
 gem "stripe_event"
 gem "aasm" 
+gem "cloudinary"
+gem "activestorage-cloudinary-service"
 
 group :development, :test do
   gem "dotenv-rails"
