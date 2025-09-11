@@ -14,6 +14,3 @@ admin.password = "SecurePassword123!"
 admin.password_confirmation = "SecurePassword123!"
 admin.role = :admin
 admin.save!
-
-puts "Purging all product images..."
-Product.find_each { |p| p.images.purge }
