@@ -8,55 +8,9 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-coffee = Category.find_or_create_by!(name: "Coffee")
-flavors = [
-    { name: "Bold Brew Original", price_cents: 1499 },
-    { name: "Vanilla Cold Brew", price_cents: 1599 },
-    { name: "Mocha Cold Brew", price_cents: 1599 },
-    { name: "Caramel Cold Brew", price_cents: 1699 }
-]
-
-flavors.each do |f|
-    Product.find_or_create_by!(name: f[:name]) do |p|
-        p.category = coffee
-        p.description = "Smooth, low‑acid cold brew."
-        p.price_cents = f[:price_cents]
-        p.currency = "zar"
-        p.sku = SecureRandom.hex(4)
-        p.stock = 50
-        p.active = true
-    end
-end
-
-puts "Creating categories..."
-category1 = Category.create!(name: 'Coffee Beans', description: 'Freshly roasted coffee beans from around the world.')
-category2 = Category.create!(name: 'Brewing Equipment', description: 'Tools for brewing the perfect cup.')
-
-puts "Creating products..."
-Product.create!(
-  name: "Espresso Blend",
-  description: "A rich and full-bodied espresso blend.",
-  price: 1500, # Price in cents
-  category: category1,
-  active: true,
-  currency: 'zar'
-)
-
-Product.create!(
-  name: "Pour-Over Dripper",
-  description: "Ceramic pour-over dripper for a clean brew.",
-  price: 2500, # Price in cents
-  category: category2,
-  active: true,
-  currency: 'zar'
-)
-
-puts "Database seeded successfully!"
-
 puts "Creating admin user..."
 admin = User.find_or_initialize_by(email: "admin@boldbrew.com")
 admin.password = "SecurePassword123!"
 admin.password_confirmation = "SecurePassword123!"
 admin.role = :admin
 admin.save!
-

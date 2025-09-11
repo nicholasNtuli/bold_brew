@@ -48,7 +48,7 @@ class Admin::ProductsController < ApplicationController
     @product.destroy
     redirect_to admin_products_path, notice: 'Product was successfully deleted.', status: :see_other
   end
-  
+
   def destroy_image
     image = @product.images.find(params[:image_id])
     image.purge
@@ -63,5 +63,10 @@ class Admin::ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(:name, :description, :price_cents, :currency, :category_id, :stock, :active, images: [])
+  end
+
+  def purge_all_images
+    Product.find_each { |p| p.images.purge }
+    render plain: "All product images purged!"
   end
 end
