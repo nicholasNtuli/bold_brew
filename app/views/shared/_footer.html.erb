@@ -1,51 +1,11 @@
 <footer class="bg-brew-dark text-gray-300 py-12">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-    <div class="col-span-1 md:col-span-2">
+  <div class="container mx-auto px-4">
+    <div class="text-center">
       <h4 class="text-2xl font-bold text-white mb-2">Bold Brew</h4>
       <p class="text-sm">Bold Brew is your daily dose of inspiration, served in a cup. We are passionate about crafting exceptional coffee for those who never settle.</p>
-      <div class="flex space-x-4 mt-4">
-        <a href="#" class="hover:text-white transition-colors duration-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10h-1.29l-.7-2.12a.5.5 0 00-.98 0l-.7 2.12H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2zM12 16a3 3 0 100-6 3 3 0 000 6z" />
-          </svg>
-        </a>
-        <a href="#" class="hover:text-white transition-colors duration-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18zM15 12h-6" />
-          </svg>
-        </a>
-        <a href="#" class="hover:text-white transition-colors duration-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10h-1.29l-.7-2.12a.5.5 0 00-.98 0l-.7 2.12H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2zM12 16a3 3 0 100-6 3 3 0 000 6z" />
-          </svg>
-        </a>
-      </div>
     </div>
-    <div>
-      <h5 class="text-white font-semibold mb-3">Company</h5>
-      <ul class="space-y-2 text-sm">
-        <li><%= link_to "About", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "Careers", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "Blog", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "Press", "#", class: "hover:text-white transition-colors duration-200" %></li>
-      </ul>
+    <div class="mt-8 text-center text-sm text-gray-500">
+      &copy; <%= Date.today.year %> Bold Brew. All rights reserved.
     </div>
-    <div>
-      <h5 class="text-white font-semibold mb-3">Support</h5>
-      <ul class="space-y-2 text-sm">
-        <li><%= link_to "Contact Us", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "FAQs", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "Shipping", "#", class: "hover:text-white transition-colors duration-200" %></li>
-        <li><%= link_to "Returns", "#", class: "hover:text-white transition-colors duration-200" %></li>
-      </ul>
-    </div>
-    <div>
-      <h5 class="text-white font-semibold mb-3">Contact Us</h5>
-      <p class="text-sm">123 Main Street<br>Anytown, USA 12345</p>
-      <%= link_to "Email Us", "#", class: "inline-block mt-4 bg-brew-black text-white py-2 px-6 rounded-full text-sm font-medium hover:bg-white hover:text-brew-black transition-colors duration-300" %>
-    </div>
-  </div>
-  <div class="mt-8 text-center text-sm text-gray-500">
-    &copy; <%= Date.today.year %> Bold Brew. All rights reserved.
   </div>
 </footer>

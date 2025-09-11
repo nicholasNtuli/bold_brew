@@ -15,9 +15,6 @@
       <%= link_to "Contact", contact_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200 #{'rounded-full py-2 px-4 bg-gray-100' if current_page?(contact_path)}" %>
       
       <% if user_signed_in? %>
-        <% if current_user.orders.any? %>
-          <%= link_to "Orders", orders_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200 #{'rounded-full py-2 px-4 bg-gray-100' if current_page?(orders_path)}" %>
-        <% end %>
         <% if current_user.admin? %>
           <%= link_to "Products", admin_products_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
         <% end %>
@@ -53,12 +50,6 @@
             <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
               <%= link_to 'My Profile', profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
               <%= link_to 'My Orders', orders_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-
-              <% if current_user.admin? %>
-                <div class="border-t border-gray-100 my-1"></div>
-                <%= link_to 'Admin', admin_users_path, class: "block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" %>
-              <% end %>
-
               <div class="border-t border-gray-100 my-1"></div>
               <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to sign out?" }, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
             </div>
@@ -87,22 +78,22 @@
 
   <!-- Mobile Menu -->
   <div class="md:hidden hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
-      <%= link_to "Home", root_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(root_path)}" %>
-      <%= link_to "Shop", products_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(products_path)}" %>
-      <%= link_to "About", about_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(about_path)}" %>
-      <%= link_to "Contact", contact_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(contact_path)}" %>
-      
+    <div class="px-4 pt-4 pb-3 space-y-2 bg-white border-t border-gray-200 shadow-lg">
+      <%= link_to "Home", root_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(root_path)}" %>
+      <%= link_to "Shop", products_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(products_path)}" %>
+      <%= link_to "About", about_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(about_path)}" %>
+      <%= link_to "Contact", contact_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(contact_path)}" %>
+
       <% if user_signed_in? %>
-        <%= link_to "My Profile", profile_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(profile_path)}" %>
-        <%= link_to "My Orders", orders_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(orders_path)}" %>
         <% if current_user.admin? %>
-          <%= link_to "Admin", admin_users_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100 #{'bg-gray-100' if current_page?(admin_users_path)}" %>
+          <%= link_to "Products", admin_products_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(admin_products_path)}" %>
         <% end %>
-        <%= button_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to sign out?" }, class: "block w-full text-left px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100" %>
+        <%= link_to "My Profile", profile_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(profile_path)}" %>
+        <%= link_to "My Orders", orders_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(orders_path)}" %>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to sign out?" }, class: "w-full text-left block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4" %>
       <% else %>
-        <%= link_to "Sign In", new_user_session_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brew-dark hover:bg-gray-100" %>
-        <%= link_to "Sign Up", new_user_registration_path, class: "block px-3 py-2 rounded-md text-base font-medium text-white bg-brew-brown hover:bg-brew-dark" %>
+        <%= link_to "Sign In", new_user_session_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4" %>
+        <%= link_to "Sign Up", new_user_registration_path, class: "block text-white bg-brew-brown hover:bg-brew-dark transition-colors duration-200 rounded-full py-2 px-4" %>
       <% end %>
     </div>
   </div>
