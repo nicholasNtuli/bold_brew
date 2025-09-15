@@ -1,9 +1,24 @@
 <div class="container-custom py-12 px-4">
   <div class="flex justify-between items-center mb-8">
     <h1 class="font-bebas text-5xl text-brew-black">Category Management</h1>
-    <div class="flex space-x-4">
+    <div class="hidden sm:flex space-x-4">
       <%= link_to 'Manage Products', admin_products_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
       <%= link_to 'Add New Category', new_admin_category_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
+    </div>
+
+    <div class="sm:hidden relative">
+      <button id="management-menu-btn" class="flex items-center px-4 py-2 border rounded-full text-brew-black hover:bg-neutral-100 transition-colors">
+        Manage
+        <svg class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+      <div id="management-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
+        <div class="py-1">
+          <%= link_to 'Manage Products', admin_products_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'Add New Category', new_admin_category_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -33,3 +48,23 @@
     </table>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const managementBtn = document.getElementById('management-menu-btn');
+    const managementMenu = document.getElementById('management-menu');
+
+    if (managementBtn && managementMenu) {
+      managementBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        managementMenu.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!managementMenu.contains(event.target) && !managementBtn.contains(event.target)) {
+          managementMenu.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>

@@ -1,26 +1,38 @@
 <div class="container-custom py-12 px-4">
   <div class="flex justify-between items-center mb-8">
     <h1 class="font-bebas text-5xl text-brew-black">Order Management</h1>
-    <div class="flex space-x-4">
+    <div class="hidden sm:flex space-x-4">
       <%= link_to 'Manage Products', admin_products_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
       <%= link_to 'Manage Categories', admin_categories_path, class: "bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300" %>
     </div>
+
+    <div class="sm:hidden relative">
+      <button id="management-menu-btn" class="flex items-center px-4 py-2 border rounded-full text-brew-black hover:bg-neutral-100 transition-colors">
+        Manage
+        <svg class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+      <div id="management-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-10">
+        <div class="py-1">
+          <%= link_to 'Manage Products', admin_products_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          <%= link_to 'Manage Categories', admin_categories_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Search and Filters -->
   <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-      <!-- Search Form -->
-      <div class="flex-1 max-w-md">
-        <%= form_with url: admin_orders_path, method: :get, local: true, class: "flex space-x-2" do |f| %>
+      <div class="w-full md:flex-1 md:max-w-md">
+        <%= form_with url: admin_orders_path, method: :get, local: true, class: "w-full flex space-x-2" do |f| %>
           <%= f.text_field :search, placeholder: "Search by order ID or customer email", value: params[:search],
-                class: "flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brew-brown" %>
+                class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brew-brown" %>
           <%= f.submit "Search", class: "bg-brew-brown text-white px-4 py-2 rounded-lg hover:bg-brew-dark transition-colors" %>
         <% end %>
       </div>
 
-      <!-- Status Filter -->
-      <div class="flex flex-wrap gap-2">
+      <div class="hidden md:flex flex-wrap gap-2">
         <%= link_to "All (#{Order.count})", admin_orders_path,
               class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status].blank? ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
         <%= link_to "Pending (#{Order.pending.count})", admin_orders_path(status: 'pending'),
@@ -32,13 +44,35 @@
         <%= link_to "Canceled (#{Order.canceled.count})", admin_orders_path(status: 'canceled'),
               class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status] == 'canceled' ? 'bg-red-200 text-red-800' : 'bg-transparent text-brew-dark hover:bg-red-100 transition-colors duration-300'}" %>
       </div>
+
+      <div class="md:hidden relative w-full">
+        <button id="status-menu-btn" class="flex justify-between items-center w-full px-4 py-2 border rounded-lg text-brew-black hover:bg-neutral-100 transition-colors">
+          Filter by Status
+          <svg class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div id="status-menu" class="absolute right-0 mt-2 w-full bg-white rounded-md shadow-lg hidden z-10">
+          <div class="py-1">
+            <%= link_to "All (#{Order.count})", admin_orders_path,
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{params[:status].blank? ? 'bg-gray-100 font-bold' : ''}" %>
+            <%= link_to "Pending (#{Order.pending.count})", admin_orders_path(status: 'pending'),
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{params[:status] == 'pending' ? 'bg-gray-100 font-bold' : ''}" %>
+            <%= link_to "Paid (#{Order.paid.count})", admin_orders_path(status: 'paid'),
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{params[:status] == 'paid' ? 'bg-gray-100 font-bold' : ''}" %>
+            <%= link_to "Shipped (#{Order.shipped.count})", admin_orders_path(status: 'shipped'),
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{params[:status] == 'shipped' ? 'bg-gray-100 font-bold' : ''}" %>
+            <%= link_to "Canceled (#{Order.canceled.count})", admin_orders_path(status: 'canceled'),
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{params[:status] == 'canceled' ? 'bg-gray-100 font-bold' : ''}" %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Orders Table -->
   <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
     <% if @orders.any? %>
-      <table class="min-w-full divide-y divide-gray-200">
+      <table class="min-w-full divide-y divide-gray-200 hidden md:table">
         <thead class="bg-gray-50">
           <tr>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
@@ -96,7 +130,57 @@
         </tbody>
       </table>
 
-      <!-- Order Summary Stats -->
+      <div class="grid grid-cols-1 gap-4 md:hidden">
+        <% @orders.each do |order| %>
+          <div class="bg-gray-50 rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Order #<%= order.id %></h3>
+                <p class="text-sm text-gray-500"><%= order.user.email %></p>
+              </div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= order.status_color %>">
+                <%= order.formatted_status %>
+              </span>
+            </div>
+
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <p class="text-sm text-gray-500">Total</p>
+                <p class="text-base font-medium text-gray-900"><%= number_to_currency(order.total_in_currency, unit: 'R') %></p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Date</p>
+                <p class="text-base font-medium text-gray-900"><%= order.created_at.strftime('%b %d, %Y') %></p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Items</p>
+                <p class="text-base font-medium text-gray-900"><%= pluralize(order.order_items.sum(:quantity), 'item') %></p>
+              </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-end gap-2 text-sm font-medium">
+              <%= link_to 'View', admin_order_path(order), class: "w-full text-center px-4 py-2 rounded-lg border border-brew-brown text-brew-brown hover:bg-brew-brown hover:text-black transition-colors duration-300" %>
+              
+              <% if order.pending? %>
+                <%= button_to 'Mark Paid', mark_as_paid_admin_order_path(order), method: :patch,
+                      class: "w-full text-center px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300" %>
+              <% end %>
+              
+              <% if order.paid? %>
+                <%= button_to 'Ship', mark_as_shipped_admin_order_path(order), method: :patch,
+                      class: "w-full text-center px-4 py-2 rounded-lg border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-colors duration-300" %>
+              <% end %>
+              
+              <% if order.can_be_canceled? %>
+                <%= button_to 'Cancel', cancel_admin_order_path(order), method: :patch,
+                      data: { turbo_confirm: 'Are you sure?' },
+                      class: "w-full text-center px-4 py-2 rounded-lg border border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
       <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-gray-50 p-4 rounded-lg text-center">
           <div class="text-2xl font-bold text-gray-900"><%= @orders.count %></div>
@@ -135,3 +219,43 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const managementBtn = document.getElementById('management-menu-btn');
+    const managementMenu = document.getElementById('management-menu');
+
+    if (managementBtn && managementMenu) {
+      managementBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        managementMenu.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!managementMenu.contains(event.target) && !managementBtn.contains(event.target)) {
+          managementMenu.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const statusBtn = document.getElementById('status-menu-btn');
+    const statusMenu = document.getElementById('status-menu');
+
+    if (statusBtn && statusMenu) {
+      statusBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        statusMenu.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!statusMenu.contains(event.target) && !statusBtn.contains(event.target)) {
+          statusMenu.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>
