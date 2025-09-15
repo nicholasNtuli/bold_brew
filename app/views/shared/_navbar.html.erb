@@ -1,13 +1,11 @@
 <header class="sticky top-0 left-0 w-full bg-white shadow-sm z-50">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-    <!-- Logo -->
     <div class="flex items-center">
       <%= link_to root_path, class: "flex items-center space-x-2" do %>
         <span class="text-brew-brown text-2xl font-bold font-bebas">Bold Brew</span>
       <% end %>
     </div>
-
-    <!-- Desktop Nav Links (centered) -->
+    
     <nav class="hidden md:flex space-x-6 lg:space-x-8 text-sm font-medium items-center">
       <%= link_to "Home", root_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200 #{'rounded-full py-2 px-4 bg-gray-100' if current_page?(root_path)}" %>
       <%= link_to "Shop", products_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200 #{'rounded-full py-2 px-4 bg-gray-100' if current_page?(products_path)}" %>
@@ -16,19 +14,49 @@
       
       <% if user_signed_in? %>
         <% if current_user.admin? %>
-          <%= link_to "Products", admin_products_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200" %>
+          <%= link_to "Products", admin_products_path, class: "text-brew-dark hover:text-brew-brown transition-colors duration-200 #{'rounded-full py-2 px-4 bg-gray-100' if current_page?(admin_products_path)}" %>
         <% end %>
       <% end %>
     </nav>
     
-    <!-- User/Auth Links & Mobile Menu Button -->
-    <div class="flex items-center space-x-4">
-      <!-- Cart Link -->
+    <div class="flex items-center space-x-4 flex-grow justify-end md:flex-grow-0">
+
+      <div class="hidden lg:flex relative">
+        <button id="desktop-search-toggle" class="text-brew-dark hover:text-brew-brown transition-colors duration-200">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </button>
+
+        <div id="desktop-search" class="absolute top-full right-0 w-[300px] mt-2 hidden">
+          <%= form_with url: search_path, method: :get, local: true, id: "search-form", class: "relative w-full" do |f| %>
+            <%= f.text_field :q, 
+                  placeholder: "Search products...", 
+                  value: params[:q],
+                  class: "w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-brew-brown focus:border-transparent",
+                  id: "search-input",
+                  autocomplete: "off" %>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    
+      <button id="mobile-search-toggle" class="lg:hidden text-brew-dark hover:text-brew-brown transition-colors duration-200">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </button>
+
       <%= link_to cart_path, class: "relative text-brew-dark hover:text-brew-brown transition-colors duration-200" do %>
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.182 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       <% end %>
 
-      <!-- User Profile Dropdown -->
       <% if user_signed_in? %>
         <div class="relative group hidden md:flex">
           <button class="flex items-center text-sm font-medium text-brew-dark hover:text-brew-brown focus:outline-none">
@@ -61,14 +89,11 @@
         </div>
       <% end %>
 
-      <!-- Mobile Menu Button -->
       <button id="mobile-menu-button" type="button" class="md:hidden text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brew-brown" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
-        <!-- Menu open icon -->
         <svg id="menu-open-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <!-- Menu close icon -->
         <svg id="menu-close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -76,7 +101,20 @@
     </div>
   </div>
 
-  <!-- Mobile Menu -->
+  <div id="mobile-search" class="lg:hidden px-4 pb-4 hidden">
+    <%= form_with url: search_path, method: :get, local: true, class: "relative" do |f| %>
+      <%= f.text_field :q, 
+            placeholder: "Search products...", 
+            value: params[:q],
+            class: "w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-brew-brown focus:border-transparent" %>
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+    <% end %>
+  </div>
+
   <div class="md:hidden hidden" id="mobile-menu">
     <div class="px-4 pt-4 pb-3 space-y-2 bg-white border-t border-gray-200 shadow-lg">
       <%= link_to "Home", root_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(root_path)}" %>
@@ -100,18 +138,105 @@
 </header>
 
 <script>
-  // Use both DOMContentLoaded and turbo:load to ensure compatibility
+  // Search functionality
+  let searchTimeout;
+  
+  function initSearch() {
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const searchResultsContent = document.getElementById('search-results-content');
+    
+    if (!searchInput || !searchResults || !searchResultsContent) return;
+    
+    // Real-time search as user types
+    searchInput.addEventListener('input', function() {
+      const query = this.value.trim();
+      
+      clearTimeout(searchTimeout);
+      
+      if (query.length < 2) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+      
+      searchTimeout = setTimeout(() => {
+        fetch(`/search.json?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.products.length > 0) {
+              let html = '';
+              data.products.forEach(product => {
+                html += `
+                  <a href="${product.url}" class="flex items-center p-3 hover:bg-gray-50 transition-colors">
+                    <div class="flex-shrink-0 w-12 h-12 mr-3">
+                      ${product.image_url ? 
+                        `<img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover rounded">` :
+                        '<div class="w-full h-full bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No image</div>'
+                      }
+                    </div>
+                    <div class="flex-grow">
+                      <div class="font-medium text-gray-900">${product.name}</div>
+                      <div class="text-sm text-gray-500">${product.category}</div>
+                      <div class="text-sm font-bold text-brew-brown">${product.price}</div>
+                    </div>
+                  </a>
+                `;
+              });
+              
+              if (data.total_results > 5) {
+                html += `
+                  <div class="border-t border-gray-100 p-3 text-center">
+                    <a href="/search?q=${encodeURIComponent(query)}" class="text-brew-brown hover:text-brew-dark font-medium">
+                      View all ${data.total_results} results →
+                    </a>
+                  </div>
+                `;
+              }
+              
+              searchResultsContent.innerHTML = html;
+              searchResults.classList.remove('hidden');
+            } else {
+              searchResultsContent.innerHTML = `
+                <div class="p-3 text-gray-500 text-center">
+                  No products found for "${query}"
+                </div>
+              `;
+              searchResults.classList.remove('hidden');
+            }
+          })
+          .catch(error => {
+            console.error('Search error:', error);
+            searchResults.classList.add('hidden');
+          });
+      }, 300);
+    });
+    
+    // Hide results when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+    
+    // Show results when focusing on input (if there's content)
+    searchInput.addEventListener('focus', function() {
+      if (this.value.trim().length >= 2 && searchResultsContent.innerHTML.trim()) {
+        searchResults.classList.remove('hidden');
+      }
+    });
+  }
+  
+  // Mobile menu functionality
   function initMobileMenu() {
     const button = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
     const openIcon = document.getElementById('menu-open-icon');
     const closeIcon = document.getElementById('menu-close-icon');
+    const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+    const mobileSearch = document.getElementById('mobile-search');
 
     if (!button || !menu || !openIcon || !closeIcon) return;
 
-    // Remove any existing event listeners
-    button.removeEventListener('click', toggleMenu);
-    
     function toggleMenu(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -119,13 +244,11 @@
       const isHidden = menu.classList.contains('hidden');
       
       if (isHidden) {
-        // Show menu
         menu.classList.remove('hidden');
         openIcon.classList.add('hidden');
         closeIcon.classList.remove('hidden');
         button.setAttribute('aria-expanded', 'true');
       } else {
-        // Hide menu
         menu.classList.add('hidden');
         openIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
@@ -133,8 +256,18 @@
       }
     }
     
-    // Add event listener
     button.addEventListener('click', toggleMenu);
+    
+    // Mobile search toggle
+    if (mobileSearchToggle && mobileSearch) {
+      mobileSearchToggle.addEventListener('click', function() {
+        mobileSearch.classList.toggle('hidden');
+        if (!mobileSearch.classList.contains('hidden')) {
+          const input = mobileSearch.querySelector('input');
+          if (input) input.focus();
+        }
+      });
+    }
 
     // Close menu when clicking outside
     document.addEventListener('click', function(e) {
@@ -147,8 +280,52 @@
     });
   }
 
-  // Initialize on both events
-  document.addEventListener('DOMContentLoaded', initMobileMenu);
-  document.addEventListener('turbo:load', initMobileMenu);
-  document.addEventListener('turbo:render', initMobileMenu);
+  // Desktop search functionality
+  function initDesktopSearch() {
+    const desktopSearchToggle = document.getElementById('desktop-search-toggle');
+    const desktopSearch = document.getElementById('desktop-search');
+
+    if (desktopSearchToggle && desktopSearch) {
+      desktopSearchToggle.addEventListener('click', function () {
+        desktopSearch.classList.toggle('hidden');
+        if (!desktopSearch.classList.contains('hidden')) {
+          const input = desktopSearch.querySelector('input');
+          if (input) input.focus();
+        }
+      });
+
+      // Close if you click outside
+      document.addEventListener('click', function (e) {
+        if (!desktopSearch.contains(e.target) && !desktopSearchToggle.contains(e.target)) {
+          desktopSearch.classList.add('hidden');
+        }
+      });
+
+      // Close with Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === "Escape") {
+          desktopSearch.classList.add('hidden');
+        }
+      });
+    }
+  }
+
+  // Initialize everything
+  document.addEventListener('DOMContentLoaded', function() {
+    initSearch();
+    initMobileMenu();
+    initDesktopSearch();
+  });
+  
+  document.addEventListener('turbo:load', function() {
+    initSearch();
+    initMobileMenu();
+    initDesktopSearch();
+  });
+  
+  document.addEventListener('turbo:render', function() {
+    initSearch();
+    initMobileMenu();
+    initDesktopSearch();
+  });
 </script>

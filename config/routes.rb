@@ -31,7 +31,8 @@ Rails.application.routes.draw do
   get "/contact" => "static_pages#contact", as: :contact
   get 'checkouts', to: 'checkouts#show'
   get 'checkouts/success', to: 'checkouts#success', as: 'checkouts_success'
-
+  get "/search", to: "search#index", as: :search
+  
   # Stripe webhooks
   mount StripeEvent::Engine, at: "/stripe/webhooks", to: "stripe_webhooks#create"
 

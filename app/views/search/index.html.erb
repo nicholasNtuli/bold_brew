@@ -1,0 +1,89 @@
+<div class="container-custom py-12 px-4">
+  <% if @query.present? %>
+    <div class="mb-8">
+      <h1 class="font-bebas text-5xl text-brew-black mb-4">
+        Search Results
+      </h1>
+      <p class="text-lg text-neutral-600">
+        <% if @total_results > 0 %>
+          Found <%= pluralize(@total_results, 'product') %> for "<strong><%= @query %></strong>"
+        <% else %>
+          No products found for "<strong><%= @query %></strong>"
+        <% end %>
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center space-x-4">
+        <span class="font-medium text-neutral-900">Filter by category:</span>
+        <div class="flex space-x-2">
+          <%= link_to 'All', search_path(q: @query),
+                class: "px-4 py-2 rounded-full #{@category.blank? || @category == 'all' ? 'bg-gray-200 text-gray-700' : 'text-black hover:bg-gray-100'}" %>
+          <% @categories.each do |category| %>
+            <%= link_to category.name, search_path(q: @query, category: category.name),
+                  class: "px-4 py-2 rounded-full #{@category == category.name ? 'bg-gray-200 text-gray-700' : 'text-black hover:bg-gray-100'}" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if @products.any? %>
+      <!-- Results Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+        <% @products.each do |product| %>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col justify-between">
+            <%= link_to product, class: "flex flex-col h-full" do %>
+              <% if product.images.attached? %>
+                <%= image_tag product.images.first, class: "w-full h-64 object-cover", alt: product.name %>
+              <% else %>
+                <%= image_tag "https://images.unsplash.com/photo-1744366928530-785b2ad9ab5d?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "w-full h-64 object-cover", alt: "Coffee Beans" %>
+              <% end %>
+              <div class="p-4 flex flex-col h-full">
+                <div class="flex-grow">
+                  <div class="text-sm text-amber-600 mb-1"><%= product.category.name %></div>
+                  <h2 class="text-xl font-bold text-brew-dark mb-2">
+                    <%= product.name %>
+                  </h2>
+                  <p class="text-neutral-600 mb-4">
+                    <% first_sentence = product.description.split('.').first.strip %>
+                    <% if first_sentence.present? && product.description.length > first_sentence.length %>
+                      <%= first_sentence + "." %>
+                    <% else %>
+                      <%= product.description %>
+                    <% end %>
+                  </p>
+                </div>
+
+                <div class="mt-auto">
+                  <p class="font-bold text-lg text-brew-brown">
+                    <%= number_to_currency(product.price_cents / 100.0, unit: 'R') %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- No Results -->
+      <div class="text-center py-16">
+        <%= image_tag('https://images.unsplash.com/photo-1665924234461-410b66f52061?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+              alt: 'Coffee Logo', 
+              class: 'mx-auto mb-4', 
+              width: '200', 
+              height: '200') %>
+        <h2 class="text-2xl font-bold text-brew-dark mb-4">No products found</h2>
+        <p class="text-neutral-600 mb-6">Try adjusting your search terms or browse our categories.</p>
+        <%= link_to 'Browse All Products', products_path, class: 'bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300' %>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Empty Search State -->
+    <div class="text-center py-16">
+      <h1 class="font-bebas text-5xl text-brew-black mb-4">Search Products</h1>
+      <p class="text-lg text-neutral-600 mb-6">Enter a search term to find products</p>
+      <%= link_to 'Browse All Products', products_path, class: 'bg-brew-light text-black font-medium py-3 px-8 rounded-full shadow-lg hover:bg-brew-dark transition-colors duration-300' %>
+    </div>
+  <% end %>
+</div>

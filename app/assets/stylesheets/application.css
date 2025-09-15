@@ -9,3 +9,8 @@
  * Consider organizing styles into separate files for maintainability.
  */
  @import "cropperjs/dist/cropper.css";
+ @media (max-width: 767px) {
+  .flex.items-center.space-x-4 {
+    width: auto !important;
+  }
+}
