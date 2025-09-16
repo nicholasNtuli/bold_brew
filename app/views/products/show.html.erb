@@ -1,7 +1,7 @@
 <div class="container-custom py-12 px-6">
   <div class="grid lg:grid-cols-2 gap-12">
     <div class="h-full">
-      <div class="w-[550px] h-[550px] mx-auto rounded-2xl overflow-hidden bg-neutral-50 shadow-lg flex items-center justify-center">
+      <div class="w-full h-auto max-w-[550px] aspect-square mx-auto rounded-2xl overflow-hidden bg-neutral-50 shadow-lg flex items-center justify-center">
         <% if @product.images.attached? %>
           <%= image_tag @product.images.first, class: "object-contain", alt: @product.name %>
         <% else %>
