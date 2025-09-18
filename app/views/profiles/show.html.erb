@@ -11,7 +11,7 @@
     <!-- Profile Image -->
     <div class="mb-4">
       <% if @user.profile_picture.attached? %>
-        <%= image_tag @user.profile_picture.variant(resize_to_fill: [120, 120]), class: "mx-auto rounded-full shadow-md" %>
+        <%= image_tag @user.profile_picture, class: "mx-auto rounded-full shadow-md w-28 h-28 object-cover" %>
       <% else %>
         <div class="w-28 h-28 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
           <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
