@@ -1,11 +1,43 @@
 <footer class="bg-brew-dark text-gray-300 py-12">
   <div class="container mx-auto px-4">
-    <div class="text-center">
-      <h4 class="text-2xl font-bold text-white mb-2">Bold Brew</h4>
-      <p class="text-sm">Bold Brew is your daily dose of inspiration, served in a cup. We are passionate about crafting exceptional coffee for those who never settle.</p>
+    <div class="flex flex-col gap-8">
+      <div>
+        <h4 class="text-2xl font-bold text-white mb-2">Bold Brew</h4>
+        <p class="text-sm">Bold Brew is your daily dose of inspiration, served in a cup. We are passionate about crafting exceptional coffee for those who never settle.</p>
+      </div>
+
+      <div class="flex flex-row justify-between md:justify-start gap-8">
+        <div>
+          <h5 class="text-lg font-semibold text-white mb-4">Explore</h5>
+          <ul class="space-y-2 text-sm">
+            <li><%= link_to "Home", root_path, class: "hover:text-brew-brown transition-colors" %></li>
+            <li><%= link_to "Shop", products_path, class: "hover:text-brew-brown transition-colors" %></li>
+            <li><%= link_to "About", about_path, class: "hover:text-brew-brown transition-colors" %></li>
+            <li><%= link_to "Contact", contact_path, class: "hover:text-brew-brown transition-colors" %></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-lg font-semibold text-white mb-4">My Account</h5>
+          <% if user_signed_in? %>
+            <ul class="space-y-2 text-sm">
+              <% if current_user.admin? %>
+                <li><%= link_to "Products", admin_products_path, class: "hover:text-brew-brown transition-colors" %></li>
+              <% end %>
+              <li><%= link_to "My Profile", profile_path, class: "hover:text-brew-brown transition-colors" %></li>
+              <li><%= link_to "My Orders", orders_path, class: "hover:text-brew-brown transition-colors" %></li>
+            </ul>
+          <% else %>
+            <div class="text-sm text-neutral-600">
+              <p>Please <%= link_to "sign in", new_user_session_path, class: "text-brew-brown hover:text-amber-700 font-medium" %> to see navigation options.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-    <div class="mt-8 text-center text-sm text-gray-500">
-      &copy; <%= Date.today.year %> Bold Brew. All rights reserved.
+
+    <div class="mt-8 text-sm text-gray-500">
+      &copy; <%= Date.today.year %> Bold Brew. All rights reserved - Made with coffee by Siphesihlle Ntuli
     </div>
   </div>
 </footer>
