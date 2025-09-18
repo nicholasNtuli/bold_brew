@@ -117,6 +117,23 @@
 
   <div class="md:hidden hidden" id="mobile-menu">
     <div class="px-4 pt-4 pb-3 space-y-2 bg-white border-t border-gray-200 shadow-lg">
+      <% if user_signed_in? %>
+        <div class="flex items-center space-x-3 mb-4">
+          <% if current_user.profile_picture.attached? %>
+            <%= image_tag current_user.profile_picture.variant(resize_to_fill: [40, 40]), class: "h-10 w-10 rounded-full" %>
+          <% else %>
+            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/>
+              </svg>
+            </div>
+          <% end %>
+          <span class="text-brew-dark font-semibold">
+            <%= current_user.username.presence || current_user.email.split('@').first %>
+          </span>
+        </div>
+      <% end %>
+
       <%= link_to "Home", root_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(root_path)}" %>
       <%= link_to "Shop", products_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(products_path)}" %>
       <%= link_to "About", about_path, class: "block text-brew-dark hover:text-brew-brown transition-colors duration-200 rounded-full py-2 px-4 #{'bg-gray-100' if current_page?(about_path)}" %>
