@@ -8,8 +8,8 @@
           <div id="line_item_<%= item.id %>" class="flex items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0">
             <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
               <% if item.product.images.attached? %>
-                <%= image_tag item.product.images.first.variant(resize_to_fill: [80, 80]).processed,
-                    class: "w-full h-full object-cover" %>
+               <%= image_tag item.product.images.first.variant(resize_to_fill: [80, 80]).processed, 
+                   class: "w-full h-full object-contain" %>
               <% else %>
                 <div class="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs">
                   No Image
