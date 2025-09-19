@@ -61,7 +61,7 @@
         <div class="relative group hidden md:flex">
           <button class="flex items-center text-sm font-medium text-brew-dark hover:text-brew-brown focus:outline-none">
             <% if current_user.profile_picture.attached? %>
-              <%= image_tag current_user.profile_picture.variant(resize_to_fill: [24, 24]), class: "h-6 w-6 rounded-full mr-2" %>
+              <%= image_tag current_user.profile_picture.variant(resize_to_fill: [48, 48]), class: "h-6 w-6 rounded-full mr-2" %>
             <% else %>
               <div class="h-6 w-6 rounded-full mr-2 bg-gray-200 flex items-center justify-center text-gray-500">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -120,7 +120,7 @@
       <% if user_signed_in? %>
         <div class="flex items-center space-x-3 mb-4">
           <% if current_user.profile_picture.attached? %>
-            <%= image_tag current_user.profile_picture.variant(resize_to_fill: [40, 40]), class: "h-10 w-10 rounded-full" %>
+            <%= image_tag current_user.profile_picture.variant(resize_to_fill: [80, 80]), class: "h-10 w-10 rounded-full" %>
           <% else %>
             <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

@@ -8,7 +8,7 @@
 
     <% if @orders.any? %>
         <!-- Order Status Filter -->
-        <div class="flex flex-wrap gap-2 mb-6">
+        <div class="hidden md:flex flex-wrap gap-2 mb-6">
             <%= link_to "All", orders_path, 
                 class: "px-4 py-2 rounded-full text-sm font-medium #{params[:status].blank? ? 'bg-brew-light text-brew-black' : 'bg-transparent text-brew-dark hover:bg-brew-light transition-colors duration-300'}" %>
             <%= link_to "Pending", orders_path(status: 'pending'), 
