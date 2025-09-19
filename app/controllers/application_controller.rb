@@ -9,18 +9,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_cart
-    # Find cart by session, or find/create for logged-in user, or create a new cart
     @current_cart ||= if user_signed_in?
-      Cart.find_or_create_by(user: current_user)
+      current_user.cart || current_user.create_cart
     elsif session[:cart_id].present?
-      Cart.find_by(id: session[:cart_id]) || Cart.create
+      Cart.find_by(id: session[:cart_id]) || create_guest_cart
     else
-      cart = Cart.create
-      session[:cart_id] = cart.id
-      cart
+      create_guest_cart
     end
-    session[:cart_id] = @current_cart.id if @current_cart.persisted?
-    @current_cart
   end
 
   private
@@ -28,5 +23,16 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     stored_location = session[:user_return_to]
     stored_location || root_path
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    session[:cart_id] = nil
+    root_path
+  end
+
+  def create_guest_cart
+    cart = Cart.create
+    session[:cart_id] = cart.id
+    cart
   end
 end

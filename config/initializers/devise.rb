@@ -320,23 +320,34 @@ Devise.setup do |config|
   
   # Warden Hook to transfer a guest's cart to a user on sign-in.
   Warden::Manager.after_authentication do |user, auth, opts|
-    guest_cart = Cart.find_by(id: auth.session[:cart_id])
+    session = auth.request.session  # make sure we're using the same session
+    guest_cart = Cart.find_by(id: session[:cart_id])
 
-    # Only transfer if a guest cart exists and is not already linked to a user.
-    if guest_cart.present? && guest_cart.user_id.nil?
-      user_cart = Cart.find_or_create_by(user: user)
-      
-      # Transfer all line items from the guest cart to the user's cart.
-      guest_cart.line_items.each do |item|
-        user_cart.add(item.product, item.quantity)
+    if guest_cart.present? && guest_cart.user_id.nil? && guest_cart.line_items.any?
+      user_cart = user.cart || user.create_cart
+
+      guest_cart.line_items.each do |guest_item|
+        existing_item = user_cart.line_items.find_by(product: guest_item.product)
+
+        if existing_item
+          existing_item.update!(
+            quantity: existing_item.quantity + guest_item.quantity
+          )
+        else
+          guest_item.update!(cart: user_cart)
+        end
       end
-      
-      # Destroy the now-empty guest cart and clear the session ID.
+
       guest_cart.destroy
-      auth.session.delete(:cart_id)
-      
-      # Redirect the user to the cart page after sign-in.
-      auth.session[:user_return_to] = '/cart'
+      session.delete(:cart_id)
+
+      session[:user_return_to] = '/cart'
+    end
+  end
+
+  Warden::Manager.before_logout do |user, auth, opts|
+    if user&.cart
+      user.cart.destroy
     end
   end
 end
