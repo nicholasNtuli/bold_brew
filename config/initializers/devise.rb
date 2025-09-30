@@ -320,27 +320,29 @@ Devise.setup do |config|
   
   # Warden Hook to transfer a guest's cart to a user on sign-in.
   Warden::Manager.after_authentication do |user, auth, opts|
-    session = auth.request.session  # make sure we're using the same session
+    session = auth.request.session
     guest_cart = Cart.find_by(id: session[:cart_id])
 
     if guest_cart.present? && guest_cart.user_id.nil? && guest_cart.line_items.any?
       user_cart = user.cart || user.create_cart
+      
+      ActiveRecord::Base.transaction do
+        guest_cart.line_items.each do |guest_item|
+          existing_item = user_cart.line_items.find_by(product: guest_item.product)
 
-      guest_cart.line_items.each do |guest_item|
-        existing_item = user_cart.line_items.find_by(product: guest_item.product)
-
-        if existing_item
-          existing_item.update!(
-            quantity: existing_item.quantity + guest_item.quantity
-          )
-        else
-          guest_item.update!(cart: user_cart)
+          if existing_item
+            existing_item.update!(quantity: existing_item.quantity + guest_item.quantity)
+            guest_item.destroy
+          else
+            guest_item.update_column(:cart_id, user_cart.id)
+          end
         end
+
+        guest_cart.reload
+        guest_cart.destroy
       end
-
-      guest_cart.destroy
+      
       session.delete(:cart_id)
-
       session[:user_return_to] = '/cart'
     end
   end
